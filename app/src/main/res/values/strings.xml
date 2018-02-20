@@ -23,7 +23,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="log_out">Log Out</string>
     <string name="email">Email</string>
-    <string name="register">Register</string>
     <string name="login_text">Have an account? Log in here.</string>
     <string-array name="account_types_array">
         <item>User</item>

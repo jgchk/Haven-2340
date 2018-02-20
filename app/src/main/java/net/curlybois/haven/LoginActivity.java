@@ -13,19 +13,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.curlybois.haven.model.User;
+
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText emailInput, passwordInput;
     private Button loginBtn;
     private TextView registerBtn;
     private ProgressBar loginProgress;
-
-    /**
-     * Dummy user credentials for use in M4
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "user:pass"
-    };
 
     /**
      * The current async authorization task
@@ -74,6 +69,17 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        emailInput.setText("");
+        emailInput.setError(null);
+        emailInput.requestFocus();
+        passwordInput.setText("");
+        passwordInput.setError(null);
+    }
+
     /**
      * Try to log in using whatever is typed into the login boxes
      */
@@ -83,26 +89,26 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Get the inputted username and password
-        String username = emailInput.getText().toString();
+        // Get the input username and password
+        String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
 
         boolean cancel = false; // Keep track of whether we should cancel due to error
         View focusView = null; // The view to focus on if we get an error
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password) && !User.isPasswordValid(password)) {
             passwordInput.setError(getString(R.string.error_invalid_password));
             focusView = passwordInput;
             cancel = true;
         }
 
         // Check for a valid username.
-        if (TextUtils.isEmpty(username)) {
+        if (TextUtils.isEmpty(email)) {
             emailInput.setError(getString(R.string.error_field_required));
             focusView = emailInput;
             cancel = true;
-        } else if (!isUsernameValid(username)) {
+        } else if (!User.isUsernameValid(email)) {
             emailInput.setError(getString(R.string.error_invalid_email));
             focusView = emailInput;
             cancel = true;
@@ -115,31 +121,9 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // If everything went well, let's try to log in
             showProgress(true);
-            authTask = new UserLoginTask(username, password);
+            authTask = new UserLoginTask(email, password);
             authTask.execute((Void) null);
         }
-    }
-
-    /**
-     * Check whether the inputted username fits username requirements
-     *
-     * @param username the username to check
-     * @return whether the username is valid
-     */
-    private boolean isUsernameValid(String username) {
-        //TODO: Replace with requirements from future assignments
-        return true;
-    }
-
-    /**
-     * Check whether the inputted password fits password requirements
-     *
-     * @param password the password to check
-     * @return whether the password is valid
-     */
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace with requirements from future assignments
-        return true;
     }
 
     /**
@@ -175,13 +159,9 @@ public class LoginActivity extends AppCompatActivity {
 //                return LoginStatus.NETWORK_FAILURE;
 //            }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(email) && pieces[1].equals(password)) {
-                    return LoginStatus.SUCCESSFUL;
-                }
+            if (TempDatabase.isValidLogin(email, password)) {
+                return LoginStatus.SUCCESSFUL;
             }
-
             return LoginStatus.INVALID_LOGIN;
         }
 
