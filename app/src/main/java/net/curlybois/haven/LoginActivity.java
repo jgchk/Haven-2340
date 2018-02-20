@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private TextInputEditText usernameInput, passwordInput;
+    private TextInputEditText emailInput, passwordInput;
     private Button loginBtn;
     private TextView registerBtn;
     private ProgressBar loginProgress;
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
      * Initialize variables holding views and setup click handlers
      */
     private void initView() {
-        usernameInput = findViewById(R.id.username_input);
+        emailInput = findViewById(R.id.email_input);
         passwordInput = findViewById(R.id.password_input);
         loginBtn = findViewById(R.id.login_btn);
         registerBtn = findViewById(R.id.register_btn);
@@ -68,10 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(findViewById(android.R.id.content),
-                        "Registration is currently unsupported.",
-                        Snackbar.LENGTH_SHORT)
-                        .show();
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -86,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Get the inputted username and password
-        String username = usernameInput.getText().toString();
+        String username = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
 
         boolean cancel = false; // Keep track of whether we should cancel due to error
@@ -101,12 +99,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for a valid username.
         if (TextUtils.isEmpty(username)) {
-            usernameInput.setError(getString(R.string.error_field_required));
-            focusView = usernameInput;
+            emailInput.setError(getString(R.string.error_field_required));
+            focusView = emailInput;
             cancel = true;
         } else if (!isUsernameValid(username)) {
-            usernameInput.setError(getString(R.string.error_invalid_email));
-            focusView = usernameInput;
+            emailInput.setError(getString(R.string.error_invalid_email));
+            focusView = emailInput;
             cancel = true;
         }
 
@@ -170,12 +168,12 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected LoginStatus doInBackground(Void... params) {
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return LoginStatus.NETWORK_FAILURE;
-            }
+//            try {
+//                // Simulate network access.
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                return LoginStatus.NETWORK_FAILURE;
+//            }
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
