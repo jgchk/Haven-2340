@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="net.curlybois.haven.LoginActivity">
+    tools:context="net.curlybois.haven.RegistrationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,16 +50,23 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
+        <Spinner
+            android:id="@+id/account_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp" />
+
         <Button
-            android:id="@+id/login_btn"
+            android:id="@+id/register_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:padding="12dp"
-            android:text="@string/login" />
+            android:text="@string/register" />
 
         <ProgressBar
-            android:id="@+id/login_progress"
+            android:id="@+id/registration_progress"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,11 +77,13 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/register_btn"
+            android:id="@+id/login_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/registration_text"
+            android:text="@string/login_text"
             android:textSize="16sp" />
+
     </LinearLayout>
+
 </ScrollView>
