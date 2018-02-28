@@ -1,4 +1,4 @@
-package net.curlybois.haven;
+package net.curlybois.haven.Controllers;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import net.curlybois.haven.R;
+import net.curlybois.haven.TempDatabase;
 import net.curlybois.haven.model.Admin;
 import net.curlybois.haven.model.HomelessPerson;
 import net.curlybois.haven.model.ShelterEmployee;
