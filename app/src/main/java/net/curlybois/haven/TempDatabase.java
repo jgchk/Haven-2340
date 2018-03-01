@@ -1,7 +1,9 @@
 package net.curlybois.haven;
 
+import net.curlybois.haven.model.Shelter;
 import net.curlybois.haven.model.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,20 @@ import java.util.Map;
 
 public class TempDatabase {
     private static Map<String, User> USERS = new HashMap<>();
+
+
+
+    private static ArrayList<Shelter> SHELTERS= new ArrayList<>();
+
+    public static boolean addShelter(Shelter shelter) {
+        return SHELTERS.add(shelter);
+    }
+    public static boolean removeShelter(Shelter shelter) {
+        return SHELTERS.remove(shelter);
+    }
+    public static ArrayList<Shelter> getShelters() {
+        return SHELTERS;
+    }
 
     /**
      * Adds a new user
