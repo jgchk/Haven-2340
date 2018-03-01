@@ -12,7 +12,11 @@ import android.view.MenuItem;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import net.curlybois.haven.R;
+import net.curlybois.haven.model.Shelter;
+
 import java.util.List;
 
 /**
@@ -22,18 +26,42 @@ import java.util.List;
 // Should display attributes of shelter that was clicked.
 
 public class ShelterDetailActivity extends AppCompatActivity {
+    TextView name;
+    TextView capacity;
+    TextView restrictions;
+    TextView lon;
+    TextView addr;
+    TextView notes;
+    TextView phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shelter_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
-        setSupportActionBar(toolbar);
+        Shelter shelter = (Shelter) getIntent().getSerializableExtra("Shelter");
+        System.out.println(shelter);
+        name = findViewById(R.id.shelter_name);
+        capacity = findViewById(R.id.shelter_capacity);
+        restrictions = findViewById(R.id.shelter_restrictions);
+        lon = findViewById(R.id.shelter_longitude);
+        addr = findViewById(R.id.shelter_address);
+        notes = findViewById(R.id.shelter_notes);
+        phone = findViewById(R.id.shelter_phone);
+        name.setText("Name: " + shelter.getName());
+        capacity.setText("Capacity: " + shelter.getAddress());
+        restrictions.setText("Restrictions: " + shelter.getRestrictions());
+        lon.setText("Coordinates: " + Float.toString(shelter.getLongitude()) + ", " + Float.toString(shelter.getLatitude()));
+        addr.setText("Address: " + shelter.getAddress());
+        notes.setText("Notes: " + shelter.getNotes());
+        phone.setText("Phone: " +shelter.getPhone());
+
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
+//        setSupportActionBar(toolbar);
 
         // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -44,23 +72,11 @@ public class ShelterDetailActivity extends AppCompatActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-        if (savedInstanceState == null) {
-            // Create the detail fragment and add it to the activity
-            // using a fragment transaction.  Pass the course info to
-            //the fragment
-            Bundle arguments = new Bundle();
-            arguments.putInt(ShelterInfoFragment.ARG_SHELTER_NAME,
-                    getIntent().getIntExtra(ShelterInfoFragment.ARG_SHELTER_NAME, 0));
 
-            ShelterInfoFragment fragment = new ShelterInfoFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.shelter_detail_container, fragment)
-                    .commit();
-        }
+    }
 
         @Override
-        public boolean onOptionsItemSelected (MenuItem item){
+        public boolean onOptionsItemSelected(MenuItem item){
             int id = item.getItemId();
             if (id == android.R.id.home) {
                 // This ID represents the Home or Up button. In the case of this
@@ -75,4 +91,4 @@ public class ShelterDetailActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-}
+

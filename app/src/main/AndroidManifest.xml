@@ -20,10 +20,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controllers.MainActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".Controllers.RegistrationActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".Controllers.ShelterListActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.Dark" />
+        <activity
+            android:name=".Controllers.ShelterDetailActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Dark" />
     </application>

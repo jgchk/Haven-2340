@@ -1,6 +1,8 @@
 package net.curlybois.haven.model;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import net.curlybois.haven.R;
@@ -9,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,76 +23,74 @@ import java.util.List;
 // Reads in the shelter data and instantiates each line as a shelter object with required
 // attributes. All objects are stored in an array list called 'shelters.'
 
-public class Shelter {
-    private static String name;
-    private static String capacity;
-    private static String restrictions;
-    private static float longitude;
-    private static float latitude;
-    private static String address;
-    private static String notes;
-    private static String phone;
+public class Shelter implements Serializable{
+    private String name;
+    private String capacity;
+    private String restrictions;
+    private float longitude;
+    private float latitude;
+    private String address;
+    private String notes;
+    private String phone;
 
     /** holds the list of all courses */
-    private ArrayList<Shelter> shelters = new ArrayList<>();
+    private static ArrayList<Shelter> shelters = new ArrayList<>();
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(name);
+        out.writeString(capacity);
+        out.writeString(restrictions);
+        out.writeFloat(longitude);
+        out.writeFloat(latitude);
+        out.writeString(address);
+        out.writeString(notes);
+        out.writeString(phone);
+    }
+    public int describeContents() {
+        return 0;
+    }
+    public static final Parcelable.Creator<Shelter> CREATOR = new Parcelable.Creator<Shelter>() {
+        public Shelter createFromParcel(Parcel in) {
+            return new Shelter(in);
+        }
+
+        public Shelter[] newArray(int size) {
+            return new Shelter[size];
+        }
+    };
 
 
+    public Shelter(String name, String cap, String res, float lon, float lat, String addr, String notes, String phone) {
+        this.name = name;
+        this.capacity = cap;
+        this.restrictions = res;
+        this.longitude = lon;
+        this.latitude = lat;
+        this.address = addr;
+        this.notes = notes;
+        this.phone = phone;
 
-    private Shelter() {
-        readData(shelters);
+    }
+    public Shelter(Parcel in) {
+//        this.name = in.readString();
+//        this.capacity = in.readString();
+//        this.restrictions = in.readString();
+//        this.longitude = in.readFloat();
+//        this.latitude = in.readFloat();
+//        this.address = in.readString();
+//        this.notes = in.readString();
+//        this.phone = in.readString();
     }
 
     /** Returns context of this activity **/
     public static Context getContext(){
         return _instance.getContext();
     }
-
     /**
      * get data from csv
      */
-    private void readData(ArrayList<Shelter> a) {
-        InputStream is = getContext().getResources().openRawResource(R.raw.shelterdatabase);
-        BufferedReader reader = new BufferedReader(
-                new InputStreamReader(is, Charset.forName("UTF-8")));
-        String info = "";
-        try {
-            reader.readLine();
-            while ((info = reader.readLine()) != null) {
-                String regex = "(?!\\B\"[^\"]*),(?![^\"]*\"\\B)";
-                String[] str = info.split(regex);
 
-                Shelter sample = new Shelter();
-                sample.setName(str[1]);
-                if (str[2].length() > 0) {
-                    sample.setCapacity((str[2]).toString());
-                } else {
-                    sample.setCapacity("Capacity not listed.");
-                }
-                if (str[3].length() > 0) {
-                    sample.setRestrictions((str[3]));
-                } else {
-                    sample.setRestrictions("Restrictions not listed.");
-                }
-                sample.setLongitude(Float.parseFloat(str[4]));
-                sample.setLatitude(Float.parseFloat(str[5]));
-                sample.setAddress(str[6].replace("\"", ""));
-                if (str[7].length() > 0) {
-                    sample.setNotes(str[7].replace("\"", ""));
-                } else {
-                    sample.setNotes("Notes not listed.");
-                }
-                sample.setPhone(str[8].toString());
-                a.add(sample);
-                Log.d("Activity", "Created " + sample);
-            }
-
-        } catch (IOException e){
-            Log.wtf("Activity", "Error reading data file on line " + info, e);
-            e.printStackTrace();
-        }
-    }
-
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
@@ -97,7 +98,7 @@ public class Shelter {
         this.name = name;
     }
 
-    public static String getCapacity() {
+    public String getCapacity() {
         return capacity;
     }
 
@@ -105,7 +106,7 @@ public class Shelter {
         this.capacity = capacity;
     }
 
-    public static String getRestrictions() {
+    public String getRestrictions() {
         return restrictions;
     }
 
@@ -113,7 +114,7 @@ public class Shelter {
         this.restrictions = restrictions;
     }
 
-    public static float getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
@@ -121,7 +122,7 @@ public class Shelter {
         this.longitude = longitude;
     }
 
-    public static float getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
@@ -129,7 +130,7 @@ public class Shelter {
         this.latitude = latitude;
     }
 
-    public static String getAddress() {
+    public String getAddress() {
         return address;
     }
 
@@ -137,7 +138,7 @@ public class Shelter {
         this.address = address;
     }
 
-    public static String getNotes() {
+    public String getNotes() {
         return notes;
     }
 
@@ -145,7 +146,7 @@ public class Shelter {
         this.notes = notes;
     }
 
-    public static String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
@@ -158,7 +159,7 @@ public class Shelter {
     }
 
     /** the currently selected course, defaults to first course */
-    private Shelter _currentShelter = shelters.get(0);
+    private Shelter _currentShelter;
 
     /**
      *
@@ -172,10 +173,11 @@ public class Shelter {
      * get the courses
      * @return a list of the courses in the app
      */
-    public List<Shelter> getShelters() { return shelters; }
+    public static List<Shelter> getShelters() { return shelters; }
+    public void setShelters(ArrayList<Shelter> a){shelters = a;}
 
     /** Singleton instance */
-    private static final Shelter _instance = new Shelter();
+    private static final Shelter _instance = new Shelter(null);
     public static Shelter getInstance() { return _instance; }
 
 
