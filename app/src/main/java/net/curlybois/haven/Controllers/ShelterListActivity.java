@@ -21,7 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import net.curlybois.haven.R;
@@ -44,6 +47,10 @@ import java.util.List;
 // tapped, a new screen is shown that displays the details about that shelter.
 public class ShelterListActivity extends AppCompatActivity {
     private ListView listView;
+    private SearchView searchView;
+    private Spinner genderSpinner;
+    private Spinner ageSpinner;
+    private CheckBox vetCheckBox;
 //    private TextView mTextMessage;
 //    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
 //            = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,6 +78,18 @@ public class ShelterListActivity extends AppCompatActivity {
         readDataIn();
         final ArrayList<Shelter> a = TempDatabase.getShelters();
         listView = (ListView) findViewById(R.id.shelter_list);
+        genderSpinner = (Spinner) findViewById(R.id.gender_spinner);
+        ageSpinner = (Spinner) findViewById(R.id.age_spinner);
+        vetCheckBox = (CheckBox) findViewById(R.id.vetCheckBox);
+        searchView = (SearchView) findViewById(R.id.searchView);
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.genders_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> ageAdapter = ArrayAdapter.createFromResource(this, R.array.age_array, android.R.layout.simple_spinner_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(genderAdapter);
+        ageSpinner.setAdapter(ageAdapter);
+        genderSpinner.setSelection(2);
+        ageSpinner.setSelection(5);
         ArrayAdapter<Shelter> arrayAdapter = new ArrayAdapter<Shelter>(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -95,6 +114,15 @@ public class ShelterListActivity extends AppCompatActivity {
 
 
 
+    }
+    @Override
+    public boolean onSearchRequested() {
+        Bundle appData = new Bundle();
+        appData.putSerializable(SearchActivity.GENDER, Shelter.Gender.values()[genderSpinner.getSelectedItemPosition()]);
+        appData.putSerializable(SearchActivity.AGE, Shelter.Age.values()[ageSpinner.getSelectedItemPosition()]);
+        appData.putBoolean(SearchActivity.VETERAN, vetCheckBox.isChecked());
+        startSearch(null, false, appData, false);
+        return true;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

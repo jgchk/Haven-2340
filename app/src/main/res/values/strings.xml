@@ -29,4 +29,17 @@
         <item>Shelter Employee</item>
         <item>Admin</item>
     </string-array>
+    <string-array name="genders_array">
+        <item>Man</item>
+        <item>Woman</item>
+        <item>None</item>
+    </string-array>
+    <string-array name="age_array">
+        <item>Young Adults</item>
+        <item>Children</item>
+        <item>Families</item>
+        <item>Families w/ newborns</item>
+        <item>Anyone</item>
+        <item>None</item>
+    </string-array>
 </resources>

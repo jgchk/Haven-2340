@@ -33,29 +33,63 @@ public class Shelter implements Serializable{
     private String address;
     private String notes;
     private String phone;
-    private ArrayList<Restriction> restrictionList;
-    public enum Restriction {
-        Women("Women"),
-        Men("Men"),
-        Children("Children"),
-        YoungAdults("Young adults"),
-        FamiliesWNewborns("Families w/ newborns"),
-        Families ("Families"),
-        Veterans("Veterans"),
-        Anyone("Anyone");
+    private ArrayList<Gender> genderList;
+    private ArrayList<Age> ageList;
+    private boolean veterans;
+    public enum Gender {
+        WOMEN("Women"),
+        MEN("Men"),
+        NONE("None");
+
         private String name;
-        private Restriction(String name) {
+
+        Gender(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+    public enum Age {
+        CHILDREN("Children"),
+        YOUNG_ADULTS("Young adults"),
+        FAMILIES_NEWBORNS("Families w/ newborns"),
+        FAMILIES("Families"),
+        ANYONE("Anyone"),
+        NONE("None");
+
+        private String name;
+
+        Age(String name) {
             this.name = name;
         }
         public String getName() {
             return this.name;
         }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
     }
+//    public enum Restriction {
+//        Women("Women"),
+//        Men("Men"),
+//        Children("Children"),
+//        YoungAdults("Young adults"),
+//        FamiliesWNewborns("Families w/ newborns"),
+//        Families ("Families"),
+//        Veterans("Veterans"),
+//        Anyone("Anyone");
+//        private String name;
+//        private Restriction(String name) {
+//            this.name = name;
+//        }
+//        public String getName() {
+//            return this.name;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return this.name;
+//        }
+//    }
     /** holds the list of all courses */
     private static ArrayList<Shelter> shelters = new ArrayList<>();
 
@@ -72,17 +106,20 @@ public class Shelter implements Serializable{
         this.address = addr;
         this.notes = notes;
         this.phone = phone;
-        this.restrictionList = parseRestrictions(res);
-
-    }
-    private ArrayList<Restriction> parseRestrictions(String restrictions) {
-        ArrayList<Restriction> list= new ArrayList<>();
-        for (Restriction r : Restriction.values()) {
-            if (restrictions.contains(r.getName())) {
-                list.add(r);
+        for (Gender g: Gender.values()) {
+            if (res.contains(g.getName())) {
+                genderList.add(g);
             }
         }
-        return list;
+        for (Age a : Age.values()) {
+            if (res.contains(a.getName())) {
+                ageList.add(a);
+            }
+        }
+        if (res.contains("Veterans")) {
+            this.veterans = true;
+        }
+
     }
 
     /** Returns context of this activity **/
@@ -90,20 +127,41 @@ public class Shelter implements Serializable{
     //    return _instance.getContext();
     //}
 
-    public ArrayList<Restriction> getRestrictionList() {
-        return restrictionList;
-    }
 
     public String getRestrictionListAsString(){
         String answer = "";
-        for (Restriction r : restrictionList) {
+        for (Gender g : genderList) {
             if (answer != "") {
-                answer = answer + ", " + r;
+                answer = answer + ", " + g;
             } else {
-                answer = answer + r;
+                answer = answer + g;
             }
         }
+        for (Age a : ageList) {
+            if (answer != "") {
+                answer = answer + ", " + a;
+            } else {
+                answer = answer + a;
+            }
+        }
+        if (answer != "") {
+            answer = answer + ", " + "Veterans";
+        } else {
+            answer = answer + "Veterans";
+        }
         return answer;
+    }
+
+    public ArrayList<Age> getAgeList() {
+        return ageList;
+    }
+
+    public ArrayList<Gender> getGenderList() {
+        return genderList;
+    }
+
+    public boolean isVeterans() {
+        return veterans;
     }
 
     public String getName() {
