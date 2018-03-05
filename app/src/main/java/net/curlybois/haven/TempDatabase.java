@@ -15,15 +15,16 @@ public class TempDatabase {
     private static Map<String, User> USERS = new HashMap<>();
 
 
-
-    private static ArrayList<Shelter> SHELTERS= new ArrayList<>();
+    private static ArrayList<Shelter> SHELTERS = new ArrayList<>();
 
     public static boolean addShelter(Shelter shelter) {
         return SHELTERS.add(shelter);
     }
+
     public static boolean removeShelter(Shelter shelter) {
         return SHELTERS.remove(shelter);
     }
+
     public static ArrayList<Shelter> getShelters() {
         return SHELTERS;
     }
@@ -46,7 +47,7 @@ public class TempDatabase {
     /**
      * Checks whether a given login is valid
      *
-     * @param email email for login
+     * @param email    email for login
      * @param password password for login
      * @return whether the login is valid (found in the user store)
      */

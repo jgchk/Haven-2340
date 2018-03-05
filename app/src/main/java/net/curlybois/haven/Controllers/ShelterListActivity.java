@@ -1,32 +1,22 @@
 package net.curlybois.haven.Controllers;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import net.curlybois.haven.R;
-import net.curlybois.haven.model.Shelter;
+import net.curlybois.haven.ShelterAdapter;
+import net.curlybois.haven.ShelterListClickListener;
 import net.curlybois.haven.TempDatabase;
+import net.curlybois.haven.model.Shelter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jessieprice on 2/28/18.
@@ -42,9 +31,10 @@ import java.util.List;
 
 // This is the main screen showing the list of shelters after the user logs in. When a shelter is
 // tapped, a new screen is shown that displays the details about that shelter.
-public class ShelterListActivity extends AppCompatActivity {
+public class ShelterListActivity extends AppCompatActivity implements ShelterListClickListener {
     private ListView listView;
-//    private TextView mTextMessage;
+
+    //    private TextView mTextMessage;
 //    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
 //            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 //
@@ -69,38 +59,23 @@ public class ShelterListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shelter_list);
         readDataIn();
-        final ArrayList<Shelter> a = TempDatabase.getShelters();
-        listView = (ListView) findViewById(R.id.shelter_list);
-        ArrayAdapter<Shelter> arrayAdapter = new ArrayAdapter<Shelter>(
-                this,
-                android.R.layout.simple_list_item_1,
-                TempDatabase.getShelters() );
-        listView.setAdapter(arrayAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-                Intent appInfo = new Intent(ShelterListActivity.this, ShelterDetailActivity.class);
-                System.out.println(a.get(position));
-                appInfo.putExtra("Shelter", a.get(position));
-                startActivity(appInfo);
-            }
-        });
 
+        RecyclerView rv = findViewById(R.id.shelter_list);
+        ShelterAdapter adapter = new ShelterAdapter(TempDatabase.getShelters(), this);
+        rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(this));
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        toolbar.setTitle(getTitle());
-
-
-
-
-
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_toolbar, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -113,7 +88,8 @@ public class ShelterListActivity extends AppCompatActivity {
         }
         return true;
     }
-    private void readDataIn(){
+
+    private void readDataIn() {
         InputStream is = this.getResources().openRawResource(R.raw.shelterdatabase);
         ArrayList<Shelter> arr = new ArrayList<>();
         BufferedReader reader = new BufferedReader(
@@ -171,11 +147,17 @@ public class ShelterListActivity extends AppCompatActivity {
                 Log.d("Activity", "DB " + TempDatabase.getShelters());
             }
 
-        } catch (IOException e){
+        } catch (IOException e) {
             Log.wtf("Activity", "Error reading data file on line " + info, e);
             e.printStackTrace();
         }
     }
 
 
+    @Override
+    public void shelterListClicked(View v, int position) {
+        Intent intent = new Intent(ShelterListActivity.this, ShelterDetailActivity.class);
+        intent.putExtra("Shelter", TempDatabase.getShelters().get(position));
+        startActivity(intent);
+    }
 }
