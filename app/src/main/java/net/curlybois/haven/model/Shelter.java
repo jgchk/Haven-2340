@@ -59,29 +59,9 @@ public class Shelter implements Serializable{
     /** holds the list of all courses */
     private static ArrayList<Shelter> shelters = new ArrayList<>();
 
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeString(name);
-        out.writeString(capacity);
-        out.writeString(restrictions);
-        out.writeFloat(longitude);
-        out.writeFloat(latitude);
-        out.writeString(address);
-        out.writeString(notes);
-        out.writeString(phone);
-    }
     public int describeContents() {
         return 0;
     }
-    public static final Parcelable.Creator<Shelter> CREATOR = new Parcelable.Creator<Shelter>() {
-        public Shelter createFromParcel(Parcel in) {
-            return new Shelter(in);
-        }
-
-        public Shelter[] newArray(int size) {
-            return new Shelter[size];
-        }
-    };
-
 
     public Shelter(String name, String cap, String res, float lon, float lat, String addr, String notes, String phone) {
         this.name = name;
@@ -104,21 +84,11 @@ public class Shelter implements Serializable{
         }
         return list;
     }
-    public Shelter(Parcel in) {
-//        this.name = in.readString();
-//        this.capacity = in.readString();
-//        this.restrictions = in.readString();
-//        this.longitude = in.readFloat();
-//        this.latitude = in.readFloat();
-//        this.address = in.readString();
-//        this.notes = in.readString();
-//        this.phone = in.readString();
-    }
 
     /** Returns context of this activity **/
-    public static Context getContext(){
-        return _instance.getContext();
-    }
+    //public static Context getContext(){
+    //    return _instance.getContext();
+    //}
 
     public ArrayList<Restriction> getRestrictionList() {
         return restrictionList;
@@ -223,8 +193,8 @@ public class Shelter implements Serializable{
     public void setShelters(ArrayList<Shelter> a){shelters = a;}
 
     /** Singleton instance */
-    private static final Shelter _instance = new Shelter(null);
-    public static Shelter getInstance() { return _instance; }
+//    private static final Shelter _instance = new Shelter(null);
+//    public static Shelter getInstance() { return _instance; }
 
 
 }
