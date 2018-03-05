@@ -48,7 +48,7 @@ public class ShelterDetailActivity extends AppCompatActivity {
         phone = findViewById(R.id.shelter_phone);
         name.setText("Name: " + shelter.getName());
         capacity.setText("Capacity: " + shelter.getAddress());
-        restrictions.setText("Restrictions: " + shelter.getRestrictions());
+        restrictions.setText("Restrictions: " + shelter.getRestrictionListAsString());
         lon.setText("Coordinates: " + Float.toString(shelter.getLongitude()) + ", " + Float.toString(shelter.getLatitude()));
         addr.setText("Address: " + shelter.getAddress());
         notes.setText("Notes: " + shelter.getNotes());

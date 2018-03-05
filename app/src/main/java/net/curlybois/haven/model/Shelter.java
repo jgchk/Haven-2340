@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,29 @@ public class Shelter implements Serializable{
     private String address;
     private String notes;
     private String phone;
+    private ArrayList<Restriction> restrictionList;
+    public enum Restriction {
+        Women("Women"),
+        Men("Men"),
+        Children("Children"),
+        YoungAdults("Young adults"),
+        FamiliesWNewborns("Families w/ newborns"),
+        Families ("Families"),
+        Veterans("Veterans"),
+        Anyone("Anyone");
+        private String name;
+        private Restriction(String name) {
+            this.name = name;
+        }
+        public String getName() {
+            return this.name;
+        }
 
+        @Override
+        public String toString() {
+            return this.name;
+        }
+    }
     /** holds the list of all courses */
     private static ArrayList<Shelter> shelters = new ArrayList<>();
 
@@ -69,7 +92,17 @@ public class Shelter implements Serializable{
         this.address = addr;
         this.notes = notes;
         this.phone = phone;
+        this.restrictionList = parseRestrictions(res);
 
+    }
+    private ArrayList<Restriction> parseRestrictions(String restrictions) {
+        ArrayList<Restriction> list= new ArrayList<>();
+        for (Restriction r : Restriction.values()) {
+            if (restrictions.contains(r.getName())) {
+                list.add(r);
+            }
+        }
+        return list;
     }
     public Shelter(Parcel in) {
 //        this.name = in.readString();
@@ -86,9 +119,22 @@ public class Shelter implements Serializable{
     public static Context getContext(){
         return _instance.getContext();
     }
-    /**
-     * get data from csv
-     */
+
+    public ArrayList<Restriction> getRestrictionList() {
+        return restrictionList;
+    }
+
+    public String getRestrictionListAsString(){
+        String answer = "";
+        for (Restriction r : restrictionList) {
+            if (answer != "") {
+                answer = answer + ", " + r;
+            } else {
+                answer = answer + r;
+            }
+        }
+        return answer;
+    }
 
     public String getName() {
         return name;
