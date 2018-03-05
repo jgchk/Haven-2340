@@ -1,4 +1,4 @@
-package net.curlybois.haven;
+package net.curlybois.haven.Controllers;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import net.curlybois.haven.R;
+import net.curlybois.haven.TempDatabase;
 import net.curlybois.haven.model.User;
 
 public class LoginActivity extends AppCompatActivity {
@@ -172,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 
             switch (loginStatus) {
                 case SUCCESSFUL:
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, ShelterListActivity.class);
                     startActivity(intent);
                     break;
                 case INVALID_LOGIN:
