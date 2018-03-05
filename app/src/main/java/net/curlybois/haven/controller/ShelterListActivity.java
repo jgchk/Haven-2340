@@ -1,4 +1,4 @@
-package net.curlybois.haven.Controllers;
+package net.curlybois.haven.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,28 +32,7 @@ import java.util.ArrayList;
 // This is the main screen showing the list of shelters after the user logs in. When a shelter is
 // tapped, a new screen is shown that displays the details about that shelter.
 public class ShelterListActivity extends AppCompatActivity implements ShelterListClickListener {
-    private ListView listView;
 
-    //    private TextView mTextMessage;
-//    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-//            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-//
-//        @Override
-//        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//            switch (item.getItemId()) {
-//                case R.id.navigation_home:
-//                    mTextMessage.setText(R.string.title_home);
-//                    return true;
-//                case R.id.navigation_dashboard:
-//                    mTextMessage.setText(R.string.title_dashboard);
-//                    return true;
-//                case R.id.navigation_notifications:
-//                    mTextMessage.setText(R.string.title_notifications);
-//                    return true;
-//            }
-//            return false;
-//        }
-//    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,43 +87,29 @@ public class ShelterListActivity extends AppCompatActivity implements ShelterLis
                 String phone;
                 String regex = "(?!\\B\"[^\"]*),(?![^\"]*\"\\B)";
                 String[] str = info.split(regex);
-                //Shelter sample = new Shelter(null);
                 Parcel args = Parcel.obtain();
                 name = str[1];
-                //sample.setName(str[1]);
                 if (str[2].length() > 0) {
-                    //sample.setCapacity((str[2]).toString());
-                    cap = (str[2]).toString();
+                    cap = str[2];
                 } else {
-                    //sample.setCapacity("Capacity not listed.");
-                    cap = ("Capacity not listed.");
+                    cap = "Capacity not listed.";
                 }
                 if (str[3].length() > 0) {
-                    //sample.setRestrictions((str[3]));
-                    res = (str[3]);
+                    res = str[3];
                 } else {
-                    //sample.setRestrictions("Restrictions not listed.");
-                    res = ("Restrictions not listed.");
+                    res = "Restrictions not listed.";
                 }
-                //sample.setLongitude(Float.parseFloat(str[4]));
-                lon = (Float.parseFloat(str[4]));
-                //sample.setLatitude(Float.parseFloat(str[5]));
-                lat = (Float.parseFloat(str[5]));
-                //sample.setAddress(str[6].replace("\"", ""));
-                addr = (str[6].replace("\"", ""));
+                lon = Float.parseFloat(str[4]);
+                lat = Float.parseFloat(str[5]);
+                addr = str[6].replace("\"", "");
                 if (str[7].length() > 0) {
-                    //sample.setNotes(str[7].replace("\"", ""));
-                    notes = (str[7].replace("\"", ""));
+                    notes = str[7].replace("\"", "");
                 } else {
-                    //sample.setNotes("Notes not listed.");
-                    notes = ("Notes not listed.");
+                    notes = "Notes not listed.";
                 }
-                //sample.setPhone(str[8].toString());
-                phone = (str[8].toString());
-                //System.out.println(args.readString());
+                phone = str[8];
                 TempDatabase.addShelter(new Shelter(name, cap, res, lon, lat, addr, notes, phone));
-                //Log.d("Activity", "Created " + sample);
-                Log.d("Activity", "DB " + TempDatabase.getShelters());
+                args.recycle();
             }
 
         } catch (IOException e) {

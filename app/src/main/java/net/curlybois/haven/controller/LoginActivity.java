@@ -1,4 +1,4 @@
-package net.curlybois.haven.Controllers;
+package net.curlybois.haven.controller;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,75 +9,63 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import net.curlybois.haven.R;
 import net.curlybois.haven.TempDatabase;
-import net.curlybois.haven.model.Admin;
-import net.curlybois.haven.model.HomelessPerson;
-import net.curlybois.haven.model.ShelterEmployee;
 import net.curlybois.haven.model.User;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText emailInput, passwordInput;
-    private Spinner accountPicker;
-    private Button registerBtn;
-    private TextView loginBtn;
-    private ProgressBar registrationProgress;
+    private Button loginBtn;
+    private TextView registerBtn;
+    private ProgressBar loginProgress;
 
     /**
      * The current async authorization task
      */
-    private UserRegistrationTask authTask = null;
+    private UserLoginTask authTask = null;
 
     /**
-     * Various possible outcomes of a registration trial
+     * Various possible outcomes of a login trial
      */
-    private enum RegistrationStatus {
+    private enum LoginStatus {
         SUCCESSFUL,
-        INVALID_USER_TYPE,
-        EMAIL_ALREADY_EXISTS,
-        NETWORK_FAILURE
+        NETWORK_FAILURE,
+        INVALID_LOGIN
     }
-
-    private static final int HOMELESS_PERSON = 0, SHELTER_EMPLOYEE = 1, ADMIN = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_login);
 
         initView();
     }
 
+    /**
+     * Initialize variables holding views and setup click handlers
+     */
     private void initView() {
-        accountPicker = findViewById(R.id.account_type_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.account_types_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        accountPicker.setAdapter(adapter);
-
         emailInput = findViewById(R.id.email_input);
         passwordInput = findViewById(R.id.password_input);
-        registerBtn = findViewById(R.id.register_btn);
         loginBtn = findViewById(R.id.login_btn);
-        registrationProgress = findViewById(R.id.registration_progress);
+        registerBtn = findViewById(R.id.register_btn);
+        loginProgress = findViewById(R.id.login_progress);
 
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptLogin();
+            }
+        });
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                attemptRegistration();
-            }
-        });
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
                 startActivity(intent);
             }
         });
@@ -88,15 +76,17 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onResume();
 
         emailInput.setText("");
-        emailInput.requestFocus();
         emailInput.setError(null);
+        emailInput.requestFocus();
         passwordInput.setText("");
         passwordInput.setError(null);
-        accountPicker.setSelection(0);
     }
 
-    private void attemptRegistration() {
-        // Don't try to register if we are already doing so
+    /**
+     * Try to log in using whatever is typed into the login boxes
+     */
+    private void attemptLogin() {
+        // Don't try to login if we are already doing so
         if (authTask != null) {
             return;
         }
@@ -104,7 +94,6 @@ public class RegistrationActivity extends AppCompatActivity {
         // Get the input username and password
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
-        int userType = accountPicker.getSelectedItemPosition();
 
         boolean cancel = false; // Keep track of whether we should cancel due to error
         View focusView = null; // The view to focus on if we get an error
@@ -134,18 +123,18 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             // If everything went well, let's try to log in
             showProgress(true);
-            authTask = new UserRegistrationTask(email, password, userType);
+            authTask = new UserLoginTask(email, password);
             authTask.execute((Void) null);
         }
     }
 
     /**
-     * Show or hide the registration progress bar
+     * Show or hide the login progress bar
      *
      * @param show whether to show the progress bar
      */
     private void showProgress(final boolean show) {
-        registrationProgress.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+        loginProgress.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
         loginBtn.setEnabled(!show);
     }
 
@@ -153,67 +142,44 @@ public class RegistrationActivity extends AppCompatActivity {
      * An asynchronous login task
      */
     @SuppressLint("StaticFieldLeak")
-    public class UserRegistrationTask extends AsyncTask<Void, Void, RegistrationStatus> {
+    public class UserLoginTask extends AsyncTask<Void, Void, LoginStatus> {
 
         private final String email;
         private final String password;
-        private final int userType;
 
-        UserRegistrationTask(String email, String password, int userType) {
+        UserLoginTask(String email, String password) {
             this.email = email;
             this.password = password;
-            this.userType = userType;
         }
 
         @Override
-        protected RegistrationStatus doInBackground(Void... params) {
+        protected LoginStatus doInBackground(Void... params) {
 //            try {
 //                // Simulate network access.
 //                Thread.sleep(2000);
 //            } catch (InterruptedException e) {
-//                return RegistrationStatus.NETWORK_FAILURE;
+//                return LoginStatus.NETWORK_FAILURE;
 //            }
 
-            User user;
-            switch (userType) {
-                case HOMELESS_PERSON:
-                    user = new HomelessPerson(email, password);
-                    break;
-                case SHELTER_EMPLOYEE:
-                    user = new ShelterEmployee(email, password);
-                    break;
-                case ADMIN:
-                    user = new Admin(email, password);
-                    break;
-                default:
-                    return RegistrationStatus.INVALID_USER_TYPE;
+            if (TempDatabase.isValidLogin(email, password)) {
+                return LoginStatus.SUCCESSFUL;
             }
-            if (TempDatabase.addUser(user)) {
-                return RegistrationStatus.SUCCESSFUL;
-            }
-            return RegistrationStatus.EMAIL_ALREADY_EXISTS;
+            return LoginStatus.INVALID_LOGIN;
         }
 
         @Override
-        protected void onPostExecute(final RegistrationStatus registrationStatus) {
+        protected void onPostExecute(final LoginStatus loginStatus) {
             authTask = null;
             showProgress(false);
 
-            switch (registrationStatus) {
+            switch (loginStatus) {
                 case SUCCESSFUL:
-                    Intent intent = new Intent(RegistrationActivity.this, ShelterListActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, ShelterListActivity.class);
                     startActivity(intent);
                     break;
-                case INVALID_USER_TYPE:
-                    Snackbar.make(findViewById(android.R.id.content),
-                            "Invalid user type.",
-                            Snackbar.LENGTH_SHORT)
-                            .show();
-                    accountPicker.requestFocus();
-                    break;
-                case EMAIL_ALREADY_EXISTS:
-                    emailInput.setError("Email already exists");
-                    emailInput.requestFocus();
+                case INVALID_LOGIN:
+                    passwordInput.setError(getString(R.string.error_incorrect_password));
+                    passwordInput.requestFocus();
                     break;
                 case NETWORK_FAILURE:
                     Snackbar.make(findViewById(android.R.id.content),
