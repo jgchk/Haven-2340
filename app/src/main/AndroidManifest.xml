@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Controllers.LoginActivity"
+            android:name=".controller.LoginActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Dark">
             <intent-filter>
@@ -20,17 +20,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Controllers.RegistrationActivity"
+            android:name=".controller.RegistrationActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".Controllers.ShelterListActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.Dark" />
+            android:name=".controller.ShelterDetailActivity"
+            android:theme="@style/AppTheme" />
         <activity
-            android:name=".Controllers.ShelterDetailActivity"
+            android:name=".controller.MainActivity"
+            android:label="@string/title_activity_main"
             android:launchMode="singleTask"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

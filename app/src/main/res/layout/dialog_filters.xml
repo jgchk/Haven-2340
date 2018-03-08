@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="Gender" />
+
+    <RadioGroup
+        android:id="@+id/gender_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/male_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Male" />
+
+        <RadioButton
+            android:id="@+id/female_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female" />
+
+        <RadioButton
+            android:id="@+id/none_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="None" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Age" />
+
+    <RadioGroup
+        android:id="@+id/age_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/families_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Families" />
+
+        <RadioButton
+            android:id="@+id/newborns_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Families with Newborns" />
+
+        <RadioButton
+            android:id="@+id/children_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Children" />
+
+        <RadioButton
+            android:id="@+id/young_adults_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Young Adults" />
+
+        <RadioButton
+            android:id="@+id/anyone_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anyone" />
+
+        <RadioButton
+            android:id="@+id/none_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="None" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="Veteran" />
+
+    <CheckBox
+        android:id="@+id/veteran_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Veteran" />
+</LinearLayout>

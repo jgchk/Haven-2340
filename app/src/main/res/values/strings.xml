@@ -24,6 +24,7 @@
     <string name="log_out">Log Out</string>
     <string name="email">Email</string>
     <string name="login_text">Have an account? Log in here.</string>
+    <string name="title_activity_main">MainActivity</string>
     <string-array name="account_types_array">
         <item>User</item>
         <item>Shelter Employee</item>

@@ -1,92 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.curlybois.haven.Controllers.ShelterDetailActivity">
+    android:layout_marginBottom="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="net.curlybois.haven.controller.ShelterDetailActivity">
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/detail_toolbar"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/shelter_capacity"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/navigation" />
+        android:text="TextView" />
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="372dp"
-        android:layout_height="445dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="2dp">
+    <TextView
+        android:id="@+id/shelter_restrictions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView" />
 
-        <TextView
-            android:id="@+id/shelter_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="18dp" />
+    <TextView
+        android:id="@+id/shelter_longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView" />
 
-        <TextView
-            android:id="@+id/shelter_capacity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/shelter_name"
-            tools:layout_editor_absoluteX="16dp" />
+    <TextView
+        android:id="@+id/shelter_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView" />
 
-        <TextView
-            android:id="@+id/shelter_restrictions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/shelter_capacity"
-            tools:layout_editor_absoluteX="16dp" />
+    <TextView
+        android:id="@+id/shelter_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView" />
 
-        <TextView
-            android:id="@+id/shelter_longitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/shelter_restrictions"
-            tools:layout_editor_absoluteX="16dp" />
+    <TextView
+        android:id="@+id/shelter_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView" />
 
-        <TextView
-            android:id="@+id/shelter_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/shelter_longitude"
-            tools:layout_editor_absoluteX="18dp" />
-
-        <TextView
-            android:id="@+id/shelter_notes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/shelter_address"
-            tools:layout_editor_absoluteX="16dp" />
-
-        <TextView
-            android:id="@+id/shelter_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/shelter_notes"
-            tools:layout_editor_absoluteX="16dp" />
-    </android.support.constraint.ConstraintLayout>
-
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
