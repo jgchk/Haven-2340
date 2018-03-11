@@ -1,9 +1,8 @@
 package net.curlybois.haven.controller;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -13,21 +12,29 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+
 import net.curlybois.haven.R;
-import net.curlybois.haven.TempDatabase;
 import net.curlybois.haven.model.User;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     private TextInputEditText emailInput, passwordInput;
     private Button loginBtn;
     private TextView registerBtn;
     private ProgressBar loginProgress;
 
-    /**
-     * The current async authorization task
-     */
-    private UserLoginTask authTask = null;
+//    /**
+//     * The current async authorization task
+//     */
+//    private UserLoginTask authTask = null;
 
     /**
      * Various possible outcomes of a login trial
@@ -75,10 +82,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        clearErrors();
         emailInput.setText("");
-        emailInput.setError(null);
-        emailInput.requestFocus();
         passwordInput.setText("");
+        emailInput.requestFocus();
+    }
+
+    private void clearErrors() {
+        emailInput.setError(null);
         passwordInput.setError(null);
     }
 
@@ -87,9 +98,9 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void attemptLogin() {
         // Don't try to login if we are already doing so
-        if (authTask != null) {
-            return;
-        }
+//        if (authTask != null) {
+//            return;
+//        }
 
         // Get the input username and password
         String email = emailInput.getText().toString();
@@ -123,8 +134,31 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // If everything went well, let's try to log in
             showProgress(true);
-            authTask = new UserLoginTask(email, password);
-            authTask.execute((Void) null);
+            clearErrors();
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            showProgress(false);
+                            if (task.isSuccessful()) {
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            } else {
+                                if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                                    emailInput.setError(getString(R.string.error_invalid_email));
+                                    emailInput.requestFocus();
+                                } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                    passwordInput.setError(getString(R.string.error_incorrect_password));
+                                    passwordInput.requestFocus();
+                                } else {
+                                    Snackbar.make(findViewById(android.R.id.content),
+                                            "Authentication failed.",
+                                            Snackbar.LENGTH_SHORT)
+                                            .show();
+                                }
+                            }
+                        }
+                    });
         }
     }
 
@@ -136,64 +170,5 @@ public class LoginActivity extends AppCompatActivity {
     private void showProgress(final boolean show) {
         loginProgress.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
         loginBtn.setEnabled(!show);
-    }
-
-    /**
-     * An asynchronous login task
-     */
-    @SuppressLint("StaticFieldLeak")
-    public class UserLoginTask extends AsyncTask<Void, Void, LoginStatus> {
-
-        private final String email;
-        private final String password;
-
-        UserLoginTask(String email, String password) {
-            this.email = email;
-            this.password = password;
-        }
-
-        @Override
-        protected LoginStatus doInBackground(Void... params) {
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return LoginStatus.NETWORK_FAILURE;
-//            }
-
-            if (TempDatabase.isValidLogin(email, password)) {
-                return LoginStatus.SUCCESSFUL;
-            }
-            return LoginStatus.INVALID_LOGIN;
-        }
-
-        @Override
-        protected void onPostExecute(final LoginStatus loginStatus) {
-            authTask = null;
-            showProgress(false);
-
-            switch (loginStatus) {
-                case SUCCESSFUL:
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
-                case INVALID_LOGIN:
-                    passwordInput.setError(getString(R.string.error_incorrect_password));
-                    passwordInput.requestFocus();
-                    break;
-                case NETWORK_FAILURE:
-                    Snackbar.make(findViewById(android.R.id.content),
-                            "Network error. Try logging in again.",
-                            Snackbar.LENGTH_SHORT)
-                            .show();
-                    break;
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            authTask = null;
-            showProgress(false);
-        }
     }
 }
