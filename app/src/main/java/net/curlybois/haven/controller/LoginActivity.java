@@ -31,20 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextView registerBtn;
     private ProgressBar loginProgress;
 
-//    /**
-//     * The current async authorization task
-//     */
-//    private UserLoginTask authTask = null;
-
-    /**
-     * Various possible outcomes of a login trial
-     */
-    private enum LoginStatus {
-        SUCCESSFUL,
-        NETWORK_FAILURE,
-        INVALID_LOGIN
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
