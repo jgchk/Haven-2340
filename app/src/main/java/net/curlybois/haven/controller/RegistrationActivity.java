@@ -201,7 +201,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
             switch (registrationStatus) {
                 case SUCCESSFUL:
-                    Intent intent = new Intent(RegistrationActivity.this, ShelterListActivity.class);
+                    Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
                     startActivity(intent);
                     break;
                 case INVALID_USER_TYPE:

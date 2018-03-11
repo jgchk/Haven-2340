@@ -24,12 +24,13 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.Dark" />
         <activity
-            android:name=".controller.ShelterListActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".controller.ShelterDetailActivity"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".controller.MainActivity"
+            android:label="@string/title_activity_main"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

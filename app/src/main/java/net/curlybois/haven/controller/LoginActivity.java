@@ -174,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 
             switch (loginStatus) {
                 case SUCCESSFUL:
-                    Intent intent = new Intent(LoginActivity.this, ShelterListActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     break;
                 case INVALID_LOGIN:
