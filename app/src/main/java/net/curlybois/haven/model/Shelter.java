@@ -31,14 +31,15 @@ public class Shelter implements Serializable {
         MEN("Men"),
         NONE("None");
 
-        private String name;
+        private String string;
 
-        Gender(String name) {
-            this.name = name;
+        Gender(String string) {
+            this.string = string;
         }
 
-        public String getName() {
-            return name;
+        @Override
+        public String toString() {
+            return string;
         }
     }
 
@@ -50,14 +51,15 @@ public class Shelter implements Serializable {
         ANYONE("Anyone"),
         NONE("None");
 
-        private String name;
+        private String string;
 
-        Age(String name) {
-            this.name = name;
+        Age(String string) {
+            this.string = string;
         }
 
-        public String getName() {
-            return this.name;
+        @Override
+        public String toString() {
+            return string;
         }
     }
 
@@ -73,12 +75,12 @@ public class Shelter implements Serializable {
         genderList = new ArrayList<>();
         ageList = new ArrayList<>();
         for (Gender g : Gender.values()) {
-            if (res.contains(g.getName())) {
+            if (res.contains(g.toString())) {
                 genderList.add(g);
             }
         }
         for (Age a : Age.values()) {
-            if (res.contains(a.getName())) {
+            if (res.contains(a.toString())) {
                 ageList.add(a);
             }
         }
@@ -88,34 +90,28 @@ public class Shelter implements Serializable {
 
     }
 
-    /**
-     * Returns context of this activity
-     **/
-    //public static Context getContext(){
-    //    return _instance.getContext();
-    //}
     public String getRestrictionListAsString() {
-        String answer = "";
+        StringBuilder answer = new StringBuilder();
         for (Gender g : genderList) {
-            if (answer != "") {
-                answer = answer + ", " + g;
+            if (!answer.toString().equals("")) {
+                answer.append(", ").append(g);
             } else {
-                answer = answer + g;
+                answer.append(g);
             }
         }
         for (Age a : ageList) {
-            if (answer != "") {
-                answer = answer + ", " + a;
+            if (!answer.toString().equals("")) {
+                answer.append(", ").append(a);
             } else {
-                answer = answer + a;
+                answer.append(a);
             }
         }
-        if (answer != "") {
-            answer = answer + ", " + "Veterans";
+        if (!answer.toString().equals("")) {
+            answer.append(", " + "Veterans");
         } else {
-            answer = answer + "Veterans";
+            answer.append("Veterans");
         }
-        return answer;
+        return answer.toString();
     }
 
     public ArrayList<Age> getAgeList() {
