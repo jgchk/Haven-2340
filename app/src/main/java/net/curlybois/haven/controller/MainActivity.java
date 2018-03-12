@@ -7,7 +7,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextMenu;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,13 +17,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import net.curlybois.haven.Database;
 import net.curlybois.haven.R;
 import net.curlybois.haven.ShelterAdapter;
 import net.curlybois.haven.ShelterListClickListener;
 import net.curlybois.haven.TempDatabase;
 import net.curlybois.haven.model.Shelter;
 
-public class MainActivity extends AppCompatActivity implements ShelterListClickListener, FilterDialog.FilterDialogListener {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements ShelterListClickListener, FilterDialog.FilterDialogListener, Database.DatabaseListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
 
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
     private ImageButton filterButton;
 
     private FilterDialog filterDialog;
+
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,10 +63,10 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
             }
         });
 
-        TempDatabase.readDataIn(this);
+//        TempDatabase.readDataIn(this);
 
         resultsView = findViewById(R.id.results_list);
-        resultsAdapter = new ShelterAdapter(TempDatabase.getShelters(), this);
+        resultsAdapter = new ShelterAdapter(new ArrayList<Shelter>(), this);
         resultsView.setAdapter(resultsAdapter);
         resultsView.setLayoutManager(new LinearLayoutManager(this));
         resultsView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -76,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
                 filterDialog.show(getSupportFragmentManager(), "filters");
             }
         });
+
+        db = new Database(this);
     }
 
     @Override
@@ -127,5 +134,16 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSheltersRetrieved() {
+        resultsAdapter.updateData(db.getShelters());
+    }
+
+    @Override
+    public void onShelterRetrievalFailed() {
+        Log.d(TAG, "Shelter retrieval failed.");
+        // TODO: update UI
     }
 }

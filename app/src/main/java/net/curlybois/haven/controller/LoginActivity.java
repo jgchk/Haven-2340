@@ -37,6 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         initView();
+
+        if (auth.getCurrentUser() != null) {
+            login();
+        }
     }
 
     /**
@@ -58,8 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
-                startActivity(intent);
+                register();
             }
         });
     }
@@ -127,8 +130,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             showProgress(false);
                             if (task.isSuccessful()) {
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
+                                login();
                             } else {
                                 if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                                     emailInput.setError(getString(R.string.error_invalid_email));
@@ -156,5 +158,15 @@ public class LoginActivity extends AppCompatActivity {
     private void showProgress(final boolean show) {
         loginProgress.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
         loginBtn.setEnabled(!show);
+    }
+
+    private void login() {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void register() {
+        Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+        startActivity(intent);
     }
 }

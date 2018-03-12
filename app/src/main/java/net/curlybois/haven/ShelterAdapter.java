@@ -31,6 +31,12 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
         this.listener = listener;
     }
 
+    public void updateData(List<Shelter> shelters) {
+        this.shelters = shelters;
+        this.sheltersFiltered = shelters;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

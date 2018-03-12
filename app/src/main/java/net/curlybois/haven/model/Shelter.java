@@ -1,5 +1,7 @@
 package net.curlybois.haven.model;
 
+import android.location.Location;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -15,12 +17,11 @@ public class Shelter implements Serializable {
     public static final String GENDER = "Gender", AGE = "Age", VETERAN = "Veteran";
 
     private String name;
-    private String capacity;
+    private int capacity;
     private String restrictions;
-    private float longitude;
-    private float latitude;
+    private Location location;
     private String address;
-    private String notes;
+    private ArrayList<String> notes;
     private String phone;
     private ArrayList<Gender> genderList;
     private ArrayList<Age> ageList;
@@ -63,12 +64,13 @@ public class Shelter implements Serializable {
         }
     }
 
-    public Shelter(String name, String cap, String res, float lon, float lat, String addr, String notes, String phone) {
+    public Shelter(String name, int cap, String res, double lon, double lat, String addr, ArrayList<String> notes, String phone) {
         this.name = name;
         this.capacity = cap;
         this.restrictions = res;
-        this.longitude = lon;
-        this.latitude = lat;
+        this.location = new Location("");
+        this.location.setLatitude(lat);
+        this.location.setLongitude(lon);
         this.address = addr;
         this.notes = notes;
         this.phone = phone;
@@ -134,11 +136,11 @@ public class Shelter implements Serializable {
         this.name = name;
     }
 
-    public String getCapacity() {
+    public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(String capacity) {
+    public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
@@ -150,20 +152,12 @@ public class Shelter implements Serializable {
         this.restrictions = restrictions;
     }
 
-    public float getLongitude() {
-        return longitude;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
-    }
-
-    public float getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getAddress() {
@@ -174,11 +168,11 @@ public class Shelter implements Serializable {
         this.address = address;
     }
 
-    public String getNotes() {
+    public ArrayList<String> getNotes() {
         return notes;
     }
 
-    public void setNotes(String notes) {
+    public void setNotes(ArrayList<String> notes) {
         this.notes = notes;
     }
 

@@ -101,7 +101,7 @@ public class TempDatabase {
                     notes = "Notes not listed.";
                 }
                 phone = str[8];
-                TempDatabase.addShelter(new Shelter(name, cap, res, lon, lat, addr, notes, phone));
+//                TempDatabase.addShelter(new Shelter(name, cap, res, lon, lat, addr, notes, phone));
                 args.recycle();
             }
         } catch (IOException e) {
