@@ -57,8 +57,8 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
             protected FilterResults performFiltering(CharSequence constraint) {
                 String[] constraints = constraint.toString().split(":");
                 String name = constraints[0].toLowerCase();
-                Shelter.Gender gender = Shelter.Gender.valueOf(constraints[1]);
-                Shelter.Age age = Shelter.Age.valueOf(constraints[2]);
+                Shelter.Gender gender = Shelter.Gender.valueOf(constraints[1].toUpperCase());
+                Shelter.Age age = Shelter.Age.valueOf(constraints[2].toUpperCase());
                 boolean veterans = Boolean.valueOf(constraints[3]);
 
                 List<Shelter> filteredList = new ArrayList<>();
