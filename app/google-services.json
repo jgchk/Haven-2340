@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "687409984327",
+    "firebase_url": "https://haven-bb0ba.firebaseio.com",
+    "project_id": "haven-bb0ba",
+    "storage_bucket": "haven-bb0ba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687409984327:android:b45d317b1db2714d",
+        "android_client_info": {
+          "package_name": "net.curlybois.haven"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687409984327-1l912n37f7j6q42piiqgme34ls7r5i7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.curlybois.haven",
+            "certificate_hash": "0c04f053dbee0844f69c8baba90548497412be29"
+          }
+        },
+        {
+          "client_id": "687409984327-en5qq2hlqb8eugevbkfsjsih5o4a7ge4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBD0aMPOjaaSPgh6zS86rmRG_t2pn8dBi4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687409984327-en5qq2hlqb8eugevbkfsjsih5o4a7ge4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
