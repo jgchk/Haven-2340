@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="net.curlybois.haven.controller.LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,7 @@
             android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/email_input"
+                android:id="@+id/email_txe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
@@ -43,7 +43,7 @@
             android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/password_input"
+                android:id="@+id/password_txe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
@@ -59,7 +59,7 @@
             android:text="@string/login" />
 
         <ProgressBar
-            android:id="@+id/login_progress"
+            android:id="@+id/login_pgb"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             android:visibility="invisible" />
 
         <TextView
-            android:id="@+id/register_btn"
+            android:id="@+id/register_txv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

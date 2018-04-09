@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.ShelterDetailActivity"
+    tools:showIn="@layout/activity_shelter_detail">
+
+    <TextView
+        android:id="@+id/address_txv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawablePadding="24dp"
+        android:drawableStart="@drawable/ic_location_on_white_24dp"
+        android:drawableTint="@color/primary"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:text="Address"
+        android:textColor="@color/primary_text" />
+
+    <include layout="@layout/item_horizontal_divider" />
+
+    <TextView
+        android:id="@+id/phone_txv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawablePadding="24dp"
+        android:drawableStart="@drawable/ic_phone_white_24dp"
+        android:drawableTint="@color/primary"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:text="Phone"
+        android:textColor="@color/primary_text" />
+
+    <include layout="@layout/item_horizontal_divider" />
+
+    <TextView
+        android:id="@+id/restrictions_txv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawablePadding="24dp"
+        android:drawableStart="@drawable/ic_check_circle_white_24dp"
+        android:drawableTint="@color/primary"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:text="Restrictions"
+        android:textColor="@color/primary_text" />
+
+    <include layout="@layout/item_horizontal_divider" />
+
+    <TextView
+        android:id="@+id/notes_txv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:drawablePadding="24dp"
+        android:drawableStart="@drawable/ic_assignment_white_24dp"
+        android:drawableTint="@color/primary"
+        android:gravity="center_vertical"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:text="Notes"
+        android:textColor="@color/primary_text" />
+
+    <include layout="@layout/item_horizontal_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_contact_mail_white_24dp"
+            android:tint="@color/primary" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/vacancies_txv"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="Vacancies"
+                android:textColor="@color/primary_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/vacancy_claim_spn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:textAlignment="viewEnd" />
+
+                <TextView
+                    android:id="@+id/vacancy_spots_txv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="spots"
+                    android:textColor="@color/primary_text" />
+
+                <Button
+                    android:id="@+id/vacancy_claim_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="Claim" />
+
+                <TextView
+                    android:id="@+id/vacancy_claim_txv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="1"
+                    android:textColor="@color/primary_text"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/vacancy_release_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="Release"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/item_horizontal_divider" />
+</LinearLayout>

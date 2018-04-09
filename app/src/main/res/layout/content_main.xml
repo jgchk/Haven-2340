@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="net.curlybois.haven.controller.MainActivity"
+    tools:context="com.jgchk.haventest.activities.MainActivity"
     tools:showIn="@layout/activity_main">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/sheet_search_peek_height" />
 
 </android.support.constraint.ConstraintLayout>

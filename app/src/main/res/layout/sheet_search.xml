@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="56dp"
+    app:behavior_peekHeight="@dimen/sheet_search_peek_height"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <android.support.constraint.ConstraintLayout
@@ -12,41 +13,41 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/search_box"
+            android:id="@+id/search_txe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:ems="10"
             android:hint="Search"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            app:layout_constraintEnd_toStartOf="@+id/filter_button"
+            app:layout_constraintEnd_toStartOf="@+id/filter_btn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/filter_button"
+            android:id="@+id/filter_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_filter_list"
+            android:src="@drawable/ic_filter_list_black_24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/search_box"
+            app:layout_constraintStart_toEndOf="@+id/search_txe"
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/results_list"
+            android:id="@+id/results_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_box" />
+            app:layout_constraintTop_toBottomOf="@id/search_txe" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

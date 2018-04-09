@@ -1,129 +1,111 @@
 package net.curlybois.haven.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.location.Location;
+
+import net.curlybois.haven.model.database.SetTypeConverter;
+
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Created by jessieprice on 2/27/18.
+ * Created by jake on 3/31/18.
  */
 
-// Reads in the shelter data and instantiates each line as a shelter object with required
-// attributes. All objects are stored in an array list called 'shelters.'
-
+@Entity
+@TypeConverters({SetTypeConverter.class})
 public class Shelter implements Serializable {
 
-    public static final String GENDER = "Gender", AGE = "Age", VETERAN = "Veteran";
-
-    private String name;
-    private String capacity;
-    private String restrictions;
-    private float longitude;
-    private float latitude;
-    private String address;
-    private String notes;
-    private String phone;
-    private ArrayList<Gender> genderList;
-    private ArrayList<Age> ageList;
-    private boolean veterans;
-
     public enum Gender {
-        WOMEN("Women"),
-        MEN("Men"),
-        NONE("None");
+        MEN("Men"), WOMEN("Women");
 
-        private String string;
+        private String str;
 
-        Gender(String string) {
-            this.string = string;
+        Gender(String str) {
+            this.str = str;
         }
 
         @Override
         public String toString() {
-            return string;
+            return str;
         }
     }
 
     public enum Age {
-        CHILDREN("Children"),
-        YOUNG_ADULTS("Young adults"),
-        FAMILIES_NEWBORNS("Families w/ newborns"),
-        FAMILIES("Families"),
-        ANYONE("Anyone"),
-        NONE("None");
+        CHILDREN("Children"), YOUNG_ADULTS("Young adults"), FAMILIES_NEWBORNS("Families w/ newborns"), FAMILIES("Families"), ANYONE("Anyone");
 
-        private String string;
+        private String str;
 
-        Age(String string) {
-            this.string = string;
+        Age(String str) {
+            this.str = str;
         }
 
         @Override
         public String toString() {
-            return string;
+            return str;
         }
     }
 
-    public Shelter(String name, String cap, String res, float lon, float lat, String addr, String notes, String phone) {
+    @PrimaryKey(autoGenerate = true) private int id;
+    private String name;
+    private int capacity;
+    private String restrictions;
+    private double longitude;
+    private double latitude;
+    private String address;
+    private String notes;
+    private String phone;
+    private Set<Gender> genderSet;
+    private Set<Age> ageSet;
+    private boolean veterans;
+    private int reservations;
+
+    public Shelter(String name, int capacity, String restrictions, double longitude, double latitude, String address, String notes, String phone) {
         this.name = name;
-        this.capacity = cap;
-        this.restrictions = res;
-        this.longitude = lon;
-        this.latitude = lat;
-        this.address = addr;
+        this.capacity = capacity;
+        this.restrictions = restrictions;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.address = address;
         this.notes = notes;
         this.phone = phone;
-        genderList = new ArrayList<>();
-        ageList = new ArrayList<>();
+        this.genderSet = new HashSet<>();
         for (Gender g : Gender.values()) {
-            if (res.contains(g.toString())) {
-                genderList.add(g);
+            if (restrictions.contains(g.toString())) {
+                genderSet.add(g);
             }
         }
+        this.ageSet = new HashSet<>();
         for (Age a : Age.values()) {
-            if (res.contains(a.toString())) {
-                ageList.add(a);
+            if (restrictions.contains(a.toString())) {
+                ageSet.add(a);
             }
         }
-        if (res.contains("Veterans")) {
+        if (restrictions.contains("Veterans")) {
             this.veterans = true;
         }
-
+        this.reservations = 0;
     }
 
-    public String getRestrictionListAsString() {
-        StringBuilder answer = new StringBuilder();
-        for (Gender g : genderList) {
-            if (!answer.toString().equals("")) {
-                answer.append(", ").append(g);
-            } else {
-                answer.append(g);
-            }
+    public float getDistance(Location location) {
+        if (location == null) {
+            return 0;
         }
-        for (Age a : ageList) {
-            if (!answer.toString().equals("")) {
-                answer.append(", ").append(a);
-            } else {
-                answer.append(a);
-            }
-        }
-        if (!answer.toString().equals("")) {
-            answer.append(", " + "Veterans");
-        } else {
-            answer.append("Veterans");
-        }
-        return answer.toString();
+        Location location1 = new Location("");
+        location1.setLatitude(latitude);
+        location1.setLongitude(longitude);
+        return location.distanceTo(location1);
     }
 
-    public ArrayList<Age> getAgeList() {
-        return ageList;
+    public int getId() {
+        return id;
     }
 
-    public ArrayList<Gender> getGenderList() {
-        return genderList;
-    }
-
-    public boolean isVeterans() {
-        return veterans;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -134,11 +116,11 @@ public class Shelter implements Serializable {
         this.name = name;
     }
 
-    public String getCapacity() {
+    public int getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(String capacity) {
+    public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
@@ -150,19 +132,19 @@ public class Shelter implements Serializable {
         this.restrictions = restrictions;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
@@ -190,7 +172,39 @@ public class Shelter implements Serializable {
         this.phone = phone;
     }
 
-    public String toString() {
-        return name;
+    public Set<Gender> getGenderSet() {
+        return genderSet;
+    }
+
+    public void setGenderSet(Set<Gender> genderSet) {
+        this.genderSet = genderSet;
+    }
+
+    public Set<Age> getAgeSet() {
+        return ageSet;
+    }
+
+    public void setAgeSet(Set<Age> ageSet) {
+        this.ageSet = ageSet;
+    }
+
+    public boolean isVeterans() {
+        return veterans;
+    }
+
+    public void setVeterans(boolean veterans) {
+        this.veterans = veterans;
+    }
+
+    public int getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(int reservations) {
+        this.reservations = reservations;
+    }
+
+    public int getVacancies() {
+        return capacity - reservations;
     }
 }

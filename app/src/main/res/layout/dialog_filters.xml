@@ -12,25 +12,25 @@
         android:text="Gender" />
 
     <RadioGroup
-        android:id="@+id/gender_group"
+        android:id="@+id/gender_rg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/male_gender"
+            android:id="@+id/male_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Male" />
 
         <RadioButton
-            android:id="@+id/female_gender"
+            android:id="@+id/female_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female" />
 
         <RadioButton
-            android:id="@+id/none_gender"
+            android:id="@+id/none_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="None" />
@@ -39,48 +39,48 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:text="Age" />
 
     <RadioGroup
-        android:id="@+id/age_group"
+        android:id="@+id/age_rg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RadioButton
-            android:id="@+id/families_age"
+            android:id="@+id/families_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Families" />
 
         <RadioButton
-            android:id="@+id/newborns_age"
+            android:id="@+id/newborns_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Families with Newborns" />
 
         <RadioButton
-            android:id="@+id/children_age"
+            android:id="@+id/children_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Children" />
 
         <RadioButton
-            android:id="@+id/young_adults_age"
+            android:id="@+id/young_adults_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Young Adults" />
 
         <RadioButton
-            android:id="@+id/anyone_age"
+            android:id="@+id/anyone_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Anyone" />
 
         <RadioButton
-            android:id="@+id/none_age"
+            android:id="@+id/none_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="None" />
@@ -89,12 +89,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:text="Veteran" />
 
     <CheckBox
-        android:id="@+id/veteran_checkbox"
+        android:id="@+id/veteran_chb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Veteran" />

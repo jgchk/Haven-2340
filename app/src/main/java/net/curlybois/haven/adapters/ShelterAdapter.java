@@ -1,8 +1,8 @@
-package net.curlybois.haven;
+package net.curlybois.haven.adapters;
 
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,25 +10,36 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import net.curlybois.haven.R;
+import net.curlybois.haven.interfaces.ShelterListClickListener;
 import net.curlybois.haven.model.Shelter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
-/**
- * Created by jake on 3/5/18.
- */
+import java.util.Locale;
 
 public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHolder> implements Filterable {
+
+    private static final String TAG = ShelterAdapter.class.getSimpleName();
 
     private List<Shelter> shelters;
     private List<Shelter> sheltersFiltered;
     private ShelterListClickListener listener;
+    private Location lastLocation;
 
     public ShelterAdapter(List<Shelter> shelters, ShelterListClickListener listener) {
         this.shelters = shelters;
         this.sheltersFiltered = shelters;
         this.listener = listener;
+        this.lastLocation = null;
+    }
+
+    public List<Shelter> getSheltersFiltered() {
+        return sheltersFiltered;
     }
 
     @NonNull
@@ -42,7 +53,10 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Shelter shelter = sheltersFiltered.get(position);
         holder.nameView.setText(shelter.getName());
-        holder.infoView.setText(shelter.getAddress());
+        holder.infoView.setText(String.format(Locale.getDefault(),
+                "%.1f mi • %d spots open",
+                shelter.getDistance(lastLocation) * 0.000621371,
+                shelter.getVacancies()));
     }
 
     @Override
@@ -50,37 +64,56 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
         return sheltersFiltered.size();
     }
 
+    public void filter(FilterQuery query) {
+        getFilter().filter(getFilterString(query));
+    }
+
+    public void sortByNearest(final Location location) {
+        this.lastLocation = location;
+        Collections.sort(sheltersFiltered, new Comparator<Shelter>() {
+            @Override
+            public int compare(Shelter o1, Shelter o2) {
+                float dist1 = o1.getDistance(location);
+                float dist2 = o2.getDistance(location);
+
+                if (dist1 < dist2) {
+                    return -1;
+                } else if (dist1 > dist2) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    private String getFilterString(FilterQuery query) {
+        return new Gson().toJson(query);
+    }
+
     @Override
     public Filter getFilter() {
         return new Filter() {
+            /**
+             * Filters the shelter list based on filter constrains
+             *
+             * @param constraint a Gson-serialized FilterQuery object
+             * @return the results of the filtering
+             */
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                String[] constraints = constraint.toString().split(":");
-                String name = constraints[0].toLowerCase();
-                Shelter.Gender gender = Shelter.Gender.valueOf(constraints[1].toUpperCase());
-                Shelter.Age age = Shelter.Age.valueOf(constraints[2].toUpperCase());
-                boolean veterans = Boolean.valueOf(constraints[3]);
-
+                FilterQuery query = new Gson().fromJson(constraint.toString(), FilterQuery.class);
                 List<Shelter> filteredList = new ArrayList<>();
-                for (Shelter s : shelters) {
-                    if (!s.getName().toLowerCase().contains(name)) {
+                for (Shelter shelter : shelters) {
+                    if (!shelter.getName().toLowerCase().contains(query.getName())
+                            || (query.getGender() != null && !shelter.getGenderSet().contains(query.getGender()))
+                            || (query.getAge() != null && !shelter.getAgeSet().contains(query.getAge()))
+                            || (query.isVeterans() && !shelter.isVeterans())) {
                         continue;
                     }
-                    if (gender != Shelter.Gender.NONE && !s.getGenderList().contains(gender)) {
-                        continue;
-                    }
-                    if (age != Shelter.Age.NONE && !s.getAgeList().contains(age)) {
-                        continue;
-                    }
-                    if (veterans && !s.isVeterans()) {
-                        continue;
-                    }
-                    Log.d("TAG", "Added " + s.getName());
-                    filteredList.add(s);
+                    filteredList.add(shelter);
                 }
                 sheltersFiltered = filteredList;
-                Log.d("TAG", filteredList.toString());
-
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = sheltersFiltered;
                 return filterResults;
@@ -93,7 +126,6 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
             }
         };
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -110,7 +142,7 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
-            listener.shelterListClicked(v, this.getAdapterPosition());
+            listener.shelterListClicked(sheltersFiltered.get(this.getAdapterPosition()));
         }
     }
 }

@@ -1,14 +1,17 @@
 package net.curlybois.haven.model;
 
 /**
- * Created by jake on 2/20/2018.
+ * Created by jake on 3/31/18.
  */
 
+// TODO: Implement ShelterEmployee permissions
 public class ShelterEmployee extends User {
-
-    // TODO: implement employee permissions
-
     public ShelterEmployee(String email, String password) {
-        super(email, password);
+        super(email, password, SHELTER_EMPLOYEE);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ShelterEmployee[email=%s, password=%s, locked=%s]", getEmail(), getPassword(), isLocked());
     }
 }
