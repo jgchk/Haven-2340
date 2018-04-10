@@ -22,15 +22,25 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHolder> implements Filterable {
+/**
+ * Converts the list of shelters into a viewable form
+ */
+@SuppressWarnings("AssignmentOrReturnOfFieldWithMutableType")
+public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHolder>
+        implements Filterable {
 
-    private static final String TAG = ShelterAdapter.class.getSimpleName();
+    private static final double METERS_TO_MILES = 0.000621371;
 
-    private List<Shelter> shelters;
+    private final List<Shelter> shelters;
     private List<Shelter> sheltersFiltered;
-    private ShelterListClickListener listener;
+    private final ShelterListClickListener listener;
     private Location lastLocation;
 
+    /**
+     * Creates a new ShelterAdapter
+     * @param shelters the list of shelters to show
+     * @param listener a callback for clicking on a shelter
+     */
     public ShelterAdapter(List<Shelter> shelters, ShelterListClickListener listener) {
         this.shelters = shelters;
         this.sheltersFiltered = shelters;
@@ -38,8 +48,12 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
         this.lastLocation = null;
     }
 
-    public List<Shelter> getSheltersFiltered() {
-        return sheltersFiltered;
+    /**
+     * Get the list of filtered shelters
+     * @return the list of filtered shelters
+     */
+    public Iterable<Shelter> getSheltersFiltered() {
+        return Collections.unmodifiableList(sheltersFiltered);
     }
 
     @NonNull
@@ -55,7 +69,7 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
         holder.nameView.setText(shelter.getName());
         holder.infoView.setText(String.format(Locale.getDefault(),
                 "%.1f mi • %d spots open",
-                shelter.getDistance(lastLocation) * 0.000621371,
+                shelter.getDistance(lastLocation) * METERS_TO_MILES,
                 shelter.getVacancies()));
     }
 
@@ -64,10 +78,18 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
         return sheltersFiltered.size();
     }
 
+    /**
+     * Apply a filter to the list of shelters
+     * @param query the filter
+     */
     public void filter(FilterQuery query) {
         getFilter().filter(getFilterString(query));
     }
 
+    /**
+     * Sort the filtered shelters by distance from a location
+     * @param location the location to sort by
+     */
     public void sortByNearest(final Location location) {
         this.lastLocation = location;
         Collections.sort(sheltersFiltered, new Comparator<Shelter>() {
@@ -87,7 +109,7 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    private String getFilterString(FilterQuery query) {
+    private CharSequence getFilterString(FilterQuery query) {
         return new Gson().toJson(query);
     }
 
@@ -106,8 +128,10 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
                 List<Shelter> filteredList = new ArrayList<>();
                 for (Shelter shelter : shelters) {
                     if (!shelter.getName().toLowerCase().contains(query.getName())
-                            || (query.getGender() != null && !shelter.getGenderSet().contains(query.getGender()))
-                            || (query.getAge() != null && !shelter.getAgeSet().contains(query.getAge()))
+                            || ((query.getGender() != null) && !shelter.getGenderSet()
+                            .contains(query.getGender()))
+                            || ((query.getAge() != null) && !shelter.getAgeSet()
+                            .contains(query.getAge()))
                             || (query.isVeterans() && !shelter.isVeterans())) {
                         continue;
                     }
@@ -129,9 +153,10 @@ public class ShelterAdapter extends RecyclerView.Adapter<ShelterAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        public TextView nameView, infoView;
+        final TextView nameView;
+        final TextView infoView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             itemView.setOnClickListener(this);

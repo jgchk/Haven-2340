@@ -1,5 +1,6 @@
 package net.curlybois.haven.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,27 +19,43 @@ import net.curlybois.haven.adapters.FilterQuery;
 import net.curlybois.haven.interfaces.FilterDialogListener;
 import net.curlybois.haven.model.Shelter;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * A dialog for choosing filtering options
+ */
 public class FilterDialog extends DialogFragment {
 
     private static final String FILTER_QUERY = "filterQuery";
 
-    @BindView(R.id.gender_rg) RadioGroup gender_rg;
-    @BindView(R.id.age_rg) RadioGroup age_rg;
-    @BindView(R.id.veteran_chb) CheckBox veteran_chb;
+    @BindView(R.id.gender_rg) private RadioGroup gender_rg;
+    @BindView(R.id.age_rg) private RadioGroup age_rg;
+    @BindView(R.id.veteran_chb) private CheckBox veteran_chb;
 
     private FilterDialogListener listener;
 
-    public static FilterDialog newInstance(FilterQuery filterQuery) {
+    /**
+     * Create a new FilterDialog
+     * @param filterQuery the current filter query
+     * @return the new FilterDialog
+     */
+    public static FilterDialog newInstance(Serializable filterQuery) {
         Bundle args = bundleArgs(filterQuery);
         FilterDialog fragment = new FilterDialog();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static Bundle bundleArgs(FilterQuery filterQuery) {
+    /**
+     * Put the FilterQuery in a Bundle
+     * @param filterQuery the current filter query
+     * @return the bundled filter query
+     */
+    public static Bundle bundleArgs(Serializable filterQuery) {
         Bundle args = new Bundle();
         args.putSerializable(FILTER_QUERY, filterQuery);
         return args;
@@ -48,9 +65,10 @@ public class FilterDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Views setup
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(
+                Objects.requireNonNull(getActivity()));
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View v = inflater.inflate(R.layout.dialog_filters, null);
+        @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.dialog_filters, null);
         ButterKnife.bind(this, v);
 
         // Listeners setup
@@ -75,8 +93,9 @@ public class FilterDialog extends DialogFragment {
 
         // Load data from bundle
         Bundle args = getArguments();
-        FilterQuery filterQuery = (FilterQuery) args.getSerializable(FILTER_QUERY);
-        gender_rg.check(genderToId(filterQuery.getGender()));
+        FilterQuery filterQuery = (FilterQuery) Objects.requireNonNull(args)
+                .getSerializable(FILTER_QUERY);
+        gender_rg.check(genderToId(Objects.requireNonNull(filterQuery).getGender()));
         age_rg.check(ageToId(filterQuery.getAge()));
         veteran_chb.setChecked(filterQuery.isVeterans());
 
@@ -97,7 +116,7 @@ public class FilterDialog extends DialogFragment {
         } else if (gender == Shelter.Gender.WOMEN) {
             return R.id.female_rb;
         }
-        return R.id.none_rb;
+        return R.id.gender_none_rb;
     }
 
     private static Shelter.Gender idToGender(int id) {
@@ -110,31 +129,33 @@ public class FilterDialog extends DialogFragment {
     }
 
     private static int ageToId(Shelter.Age age) {
-        if (age == Shelter.Age.FAMILIES) {
-            return R.id.families_rb;
-        } else if (age == Shelter.Age.FAMILIES_NEWBORNS) {
-            return R.id.newborns_rb;
-        } else if (age == Shelter.Age.CHILDREN) {
-            return R.id.children_rb;
-        } else if (age == Shelter.Age.YOUNG_ADULTS) {
-            return R.id.young_adults_rb;
-        } else if (age == Shelter.Age.ANYONE) {
-            return R.id.anyone_rb;
+        switch (age) {
+            case FAMILIES:
+                return R.id.families_rb;
+            case FAMILIES_NEWBORNS:
+                return R.id.newborns_rb;
+            case CHILDREN:
+                return R.id.children_rb;
+            case YOUNG_ADULTS:
+                return R.id.young_adults_rb;
+            case ANYONE:
+                return R.id.anyone_rb;
         }
-        return R.id.none_rb;
+        return R.id.gender_none_rb;
     }
 
     private static Shelter.Age idToAge(int id) {
-        if (id == R.id.families_rb) {
-            return Shelter.Age.FAMILIES;
-        } else if (id == R.id.newborns_rb) {
-            return Shelter.Age.FAMILIES_NEWBORNS;
-        } else if (id == R.id.children_rb) {
-            return Shelter.Age.CHILDREN;
-        } else if (id == R.id.young_adults_rb) {
-            return Shelter.Age.YOUNG_ADULTS;
-        } else if (id == R.id.anyone_rb) {
-            return Shelter.Age.ANYONE;
+        switch (id) {
+            case R.id.families_rb:
+                return Shelter.Age.FAMILIES;
+            case R.id.newborns_rb:
+                return Shelter.Age.FAMILIES_NEWBORNS;
+            case R.id.children_rb:
+                return Shelter.Age.CHILDREN;
+            case R.id.young_adults_rb:
+                return Shelter.Age.YOUNG_ADULTS;
+            case R.id.anyone_rb:
+                return Shelter.Age.ANYONE;
         }
         return null;
     }

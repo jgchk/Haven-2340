@@ -17,17 +17,20 @@ import net.curlybois.haven.controllers.UsersController;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Registers a new user account
+ */
 public class RegistrationActivity extends AppCompatActivity {
 
-    private static final String STATE_EMAIL = "email",
-            STATE_PASSWORD = "password",
-            STATE_ACCOUNT_TYPE = "accountType";
+    private static final String STATE_EMAIL = "email";
+    private static final String STATE_PASSWORD = "password";
+    private static final String STATE_ACCOUNT_TYPE = "accountType";
 
-    @BindView(R.id.account_type_spn) Spinner accountType_spn;
-    @BindView(R.id.email_txe) TextInputEditText email_txe;
-    @BindView(R.id.password_txe) TextInputEditText password_txe;
-    @BindView(R.id.register_btn) Button register_btn;
-    @BindView(R.id.login_txv) TextView login_txv;
+    @BindView(R.id.account_type_spn) private Spinner accountType_spn;
+    @BindView(R.id.email_txe) private TextInputEditText email_txe;
+    @BindView(R.id.password_txe) private TextInputEditText password_txe;
+    @BindView(R.id.register_btn) private Button register_btn;
+    @BindView(R.id.login_txv) private TextView login_txv;
 
     private UsersController usersController;
 
@@ -81,7 +84,8 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     /**
-     * Attempts to register a new account and log in using the entered email, password, and account type
+     * Attempts to register a new account and log in using the entered email, password,
+     * and account type
      */
     private void register() {
         usersController.register(getEmail(), getPassword(), getAccountType());
@@ -102,7 +106,7 @@ public class RegistrationActivity extends AppCompatActivity {
         return email_txe.getText().toString();
     }
 
-    private void setEmail(String email) {
+    private void setEmail(CharSequence email) {
         email_txe.setText(email);
     }
 
@@ -110,7 +114,7 @@ public class RegistrationActivity extends AppCompatActivity {
         return password_txe.getText().toString();
     }
 
-    private void setPassword(String password) {
+    private void setPassword(CharSequence password) {
         password_txe.setText(password);
     }
 

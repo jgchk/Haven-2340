@@ -26,7 +26,8 @@ import static net.curlybois.haven.model.User.HOMELESS_PERSON;
 public class UsersControllerTest {
 
     private UsersController usersController;
-    private String email = "test@email.com", password = "password";
+    private final String email = "test@email.com";
+    private final String password = "password";
 
     @Before
     public void setUp() {

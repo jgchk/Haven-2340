@@ -35,9 +35,18 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
 
+    /**
+     * Get the data access object
+     * @return the data access object
+     */
     public abstract AppDao appDao();
 
-    public synchronized static AppDatabase getAppDatabase(final Context context) {
+    /**
+     * Get the app database singleton
+     * @param context the current context
+     * @return the app database
+     */
+    public static synchronized AppDatabase getAppDatabase(final Context context) {
         if (INSTANCE == null) {
             INSTANCE = buildDatabase(context);
         }
@@ -45,7 +54,8 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     private static AppDatabase buildDatabase(final Context context) {
-        return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "haven-database")
+        return Room.databaseBuilder(context.getApplicationContext(),
+                AppDatabase.class, "haven-database")
                 // allow queries on the main thread.
                 // Don't do this on a real app! See PersistenceBasicSample for an example.
                 .allowMainThreadQueries()
@@ -66,7 +76,8 @@ public abstract class AppDatabase extends RoomDatabase {
                             cv.put("address", shelter.getAddress());
                             cv.put("notes", shelter.getNotes());
                             cv.put("phone", shelter.getPhone());
-                            cv.put("genderSet", SetTypeConverter.fromGenderSet(shelter.getGenderSet()));
+                            cv.put("genderSet", SetTypeConverter.fromGenderSet(
+                                    shelter.getGenderSet()));
                             cv.put("ageSet", SetTypeConverter.fromAgeSet(shelter.getAgeSet()));
                             cv.put("veterans", shelter.isVeterans());
                             cv.put("reservations", shelter.getReservations());
@@ -77,9 +88,11 @@ public abstract class AppDatabase extends RoomDatabase {
                 .build();
     }
 
-    public static void destroyInstance() {
-        INSTANCE = null;
-    }
+// --Commented out by Inspection START (4/10/18 6:42 PM):
+//    public static void destroyInstance() {
+//        INSTANCE = null;
+//    }
+// --Commented out by Inspection STOP (4/10/18 6:42 PM)
 
     /**
      * Read in shelter data from the CSV to a list of Shelters
@@ -90,46 +103,52 @@ public abstract class AppDatabase extends RoomDatabase {
     private static List<Shelter> readShelters(Context context) {
         List<Shelter> shelters = new ArrayList<>();
         InputStream is = context.getResources().openRawResource(R.raw.shelter_database);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is,
+                Charset.forName("UTF-8")));
         String info = "";
         try {
             reader.readLine();
             while ((info = reader.readLine()) != null) {
-                String regex = "(?!\\B\"[^\"]*),(?![^\"]*\"\\B)";
-                String[] str = info.split(regex);
-                String name = str[1];
-                int capacity = 0;
-                if (str[2].length() > 0) {
-                    Scanner in = new Scanner(str[2]).useDelimiter("[^0-9]+");
-                    try {
-                        while (true) {
-                            capacity += in.nextInt();
-                        }
-                    } catch (NoSuchElementException ignored) {
-                    }
-                }
-                String restrictions;
-                if (str[3].length() > 0) {
-                    restrictions = str[3];
-                } else {
-                    restrictions = "Restrictions not listed.";
-                }
-                double longitude = Double.parseDouble(str[4]);
-                double latitude = Double.parseDouble(str[5]);
-                String address = str[6].replace("\"", "");
-                String notes;
-                if (str[7].length() > 0) {
-                    notes = str[7].replace("\"", "");
-                } else {
-                    notes = "Notes not listed.";
-                }
-                String phone = str[8];
-                shelters.add(new Shelter(name, capacity, restrictions, longitude, latitude, address, notes, phone));
+                shelters.add(stringToShelter(info));
             }
         } catch (IOException e) {
             Log.wtf(TAG, "Error reading data file on line " + info, e);
             e.printStackTrace();
         }
         return shelters;
+    }
+
+    private static Shelter stringToShelter(String string) {
+        String regex = "(?!\\B\"[^\"]*),(?![^\"]*\"\\B)";
+        String[] str = string.split(regex);
+        String name = str[1];
+        int capacity = 0;
+        if (!str[2].isEmpty()) {
+            Scanner in = new Scanner(str[2]).useDelimiter("[^0-9]+");
+            try {
+                while (true) {
+                    capacity += in.nextInt();
+                }
+            } catch (NoSuchElementException ignored) {
+            }
+        }
+        String restrictions;
+        if (!str[3].isEmpty()) {
+            restrictions = str[3];
+        } else {
+            restrictions = "Restrictions not listed.";
+        }
+        double longitude = Double.parseDouble(str[4]);
+        double latitude = Double.parseDouble(str[5]);
+        String address = str[6].replace("\"", "");
+        String notes;
+        if (!str[7].isEmpty()) {
+            notes = str[7].replace("\"", "");
+        } else {
+            notes = "Notes not listed.";
+        }
+        String phone = str[8];
+        return new Shelter(name, capacity, restrictions, longitude, latitude, address, notes,
+                phone);
     }
 }

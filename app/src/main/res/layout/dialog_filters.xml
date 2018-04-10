@@ -8,8 +8,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:text="Gender" />
+        android:layout_marginStart="8dp"
+        android:text="@string/gender" />
 
     <RadioGroup
         android:id="@+id/gender_rg"
@@ -21,27 +21,27 @@
             android:id="@+id/male_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Male" />
+            android:text="@string/male" />
 
         <RadioButton
             android:id="@+id/female_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Female" />
+            android:text="@string/female" />
 
         <RadioButton
-            android:id="@+id/none_rb"
+            android:id="@+id/gender_none_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="None" />
+            android:text="@string/none" />
     </RadioGroup>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Age" />
+        android:text="@string/age" />
 
     <RadioGroup
         android:id="@+id/age_rg"
@@ -53,49 +53,49 @@
             android:id="@+id/families_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Families" />
+            android:text="@string/families" />
 
         <RadioButton
             android:id="@+id/newborns_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Families with Newborns" />
+            android:text="@string/families_with_newborns" />
 
         <RadioButton
             android:id="@+id/children_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Children" />
+            android:text="@string/children" />
 
         <RadioButton
             android:id="@+id/young_adults_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Young Adults" />
+            android:text="@string/young_adults" />
 
         <RadioButton
             android:id="@+id/anyone_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Anyone" />
+            android:text="@string/anyone" />
 
         <RadioButton
-            android:id="@+id/none_rb"
+            android:id="@+id/age_none_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="None" />
+            android:text="@string/none" />
     </RadioGroup>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Veteran" />
+        android:text="@string/veteran" />
 
     <CheckBox
         android:id="@+id/veteran_chb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Veteran" />
+        android:text="@string/veteran" />
 </LinearLayout>

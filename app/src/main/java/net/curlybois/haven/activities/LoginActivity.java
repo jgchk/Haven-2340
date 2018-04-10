@@ -14,14 +14,17 @@ import net.curlybois.haven.controllers.UsersController;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Logs in the user
+ */
 public class LoginActivity extends AppCompatActivity {
-    private static final String STATE_EMAIL = "email",
-            STATE_PASSWORD = "password";
+    private static final String STATE_EMAIL = "email";
+    private static final String STATE_PASSWORD = "password";
 
-    @BindView(R.id.email_txe) TextInputEditText email_txe;
-    @BindView(R.id.password_txe) TextInputEditText password_txe;
-    @BindView(R.id.login_btn) Button login_btn;
-    @BindView(R.id.register_txv) TextView register_txv;
+    @BindView(R.id.email_txe) private TextInputEditText email_txe;
+    @BindView(R.id.password_txe) private TextInputEditText password_txe;
+    @BindView(R.id.login_btn) private Button login_btn;
+    @BindView(R.id.register_txv) private TextView register_txv;
 
     private UsersController usersController;
 
@@ -96,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
         return email_txe.getText().toString();
     }
 
-    private void setEmail(String email) {
+    private void setEmail(CharSequence email) {
         email_txe.setText(email);
     }
 
@@ -104,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         return password_txe.getText().toString();
     }
 
-    private void setPassword(String password) {
+    private void setPassword(CharSequence password) {
         password_txe.setText(password);
     }
 }

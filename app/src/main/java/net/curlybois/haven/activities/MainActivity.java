@@ -43,19 +43,23 @@ import net.curlybois.haven.interfaces.ShelterListClickListener;
 import net.curlybois.haven.model.Shelter;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements ShelterListClickListener, FilterDialogListener, OnMapReadyCallback {
+/**
+ * Allows the user to search for shelters
+ */
+public class MainActivity extends AppCompatActivity implements ShelterListClickListener,
+        FilterDialogListener, OnMapReadyCallback {
 
     private static final int MY_LOCATION_REQUEST_CODE = 0;
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int ZOOM_LEVEL = 11;
 
-    @BindView(R.id.results_rv) RecyclerView results_rv;
-    @BindView(R.id.search_txe) EditText search_txe;
-    @BindView(R.id.filter_btn) ImageButton filter_btn;
+    @BindView(R.id.results_rv) private RecyclerView results_rv;
+    @BindView(R.id.search_txe) private EditText search_txe;
+    @BindView(R.id.filter_btn) private ImageButton filter_btn;
 
     private ShelterAdapter resultsAdapter;
     private SheltersController sheltersController;
@@ -78,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
         filterDialog = FilterDialog.newInstance(sheltersController.getFilterQuery());
 
         // Map setup
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         locationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -86,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
         resultsAdapter = new ShelterAdapter(sheltersController.getShelters(), this);
         results_rv.setAdapter(resultsAdapter);
         results_rv.setLayoutManager(new LinearLayoutManager(this));
-        results_rv.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        results_rv.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL));
 
         // Listeners
         search_txe.addTextChangedListener(new TextWatcher() {
@@ -109,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
         filter_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filterDialog.setArguments(FilterDialog.bundleArgs(sheltersController.getFilterQuery()));
+                filterDialog.setArguments(FilterDialog.bundleArgs(
+                        sheltersController.getFilterQuery()));
                 filterDialog.show(getSupportFragmentManager(), "filters");
             }
         });
@@ -121,10 +128,13 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
         this.googleMap = googleMap;
 
         // Enable location if we have permission, otherwise ask
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             enableLocation();
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, MY_LOCATION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MY_LOCATION_REQUEST_CODE);
         }
 
         // Initialize filters now that our map is up
@@ -132,12 +142,13 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_LOCATION_REQUEST_CODE) {
-            if (permissions.length == 1
+            if ((permissions.length == 1)
                     && permissions[0].equals(Manifest.permission.ACCESS_COARSE_LOCATION)
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 enableLocation();
             }
         }
@@ -195,7 +206,8 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
     @Override
     public void applyFilters() {
         resultsAdapter.filter(sheltersController.getFilterQuery());
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             locationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
@@ -208,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
         }
 
         googleMap.clear();
-        List<Marker> markers = new ArrayList<>();
+        Collection<Marker> markers = new ArrayList<>();
         for (Shelter shelter : resultsAdapter.getSheltersFiltered()) {
             markers.add(googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(shelter.getLatitude(), shelter.getLongitude()))
@@ -223,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
             }
             LatLngBounds bounds = builder.build();
             CameraUpdate center = CameraUpdateFactory.newLatLng(bounds.getCenter());
-            CameraUpdate zoom = CameraUpdateFactory.zoomTo(11);
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(ZOOM_LEVEL);
             googleMap.moveCamera(center);
             googleMap.animateCamera(zoom);
         }

@@ -20,13 +20,17 @@ import static net.curlybois.haven.model.User.SHELTER_EMPLOYEE;
 
 public class UsersController {
 
-    private static final String TAG = UsersController.class.getSimpleName();
     private static UsersController INSTANCE = null;
 
-    private AppDatabase db;
+    private final AppDatabase db;
     private User currentUser;
-    private SharedPreferences sharedPref;
+    private final SharedPreferences sharedPref;
 
+    /**
+     * Get the singleton instance of UsersController
+     * @param context the current context
+     * @return the singleton instance
+     */
     public static UsersController getInstance(Context context) {
         if (INSTANCE == null) {
             INSTANCE = new UsersController(context);
@@ -34,12 +38,20 @@ public class UsersController {
         return INSTANCE;
     }
 
+    /**
+     * Create a new UsersController
+     * @param context the current context
+     */
     public UsersController(Context context) {
         this.db = AppDatabase.getAppDatabase(context);
         this.currentUser = null;
         this.sharedPref = context.getSharedPreferences("prefs_users", Context.MODE_PRIVATE);
     }
 
+    /**
+     * Get the current logged-in user
+     * @return the current logged-in user
+     */
     public User getCurrentUser() {
         return currentUser;
     }
@@ -53,7 +65,7 @@ public class UsersController {
      */
     public boolean login(String email, String password) {
         User user = db.appDao().getUserByEmail(email);
-        if (user == null || !user.isPasswordCorrect(password)) {
+        if ((user == null) || !user.isPasswordCorrect(password)) {
             return false;
         }
         currentUser = user;
@@ -69,7 +81,7 @@ public class UsersController {
      * @param id the user id
      * @return true if login successful, false otherwise
      */
-    public boolean login(int id) {
+    private boolean login(int id) {
         User user = db.appDao().getUserById(id);
         if (user == null) {
             return false;
@@ -83,18 +95,15 @@ public class UsersController {
 
     /**
      * Logs out the current user
-     *
-     * @return true if the logout was successful, false if there is no user to log out
      */
-    public boolean logout() {
+    public void logout() {
         if (currentUser == null) {
-            return false;
+            return;
         }
         currentUser = null;
         sharedPref.edit()
                 .putInt("savedLoginId", -1)
                 .apply();
-        return true;
     }
 
     /**
@@ -106,14 +115,18 @@ public class UsersController {
      */
     public void register(String email, String password, int type) {
         User user;
-        if (type == HOMELESS_PERSON) {
-            user = new HomelessPerson(email, password);
-        } else if (type == SHELTER_EMPLOYEE) {
-            user = new ShelterEmployee(email, password);
-        } else if (type == ADMIN) {
-            user = new Admin(email, password);
-        } else {
-            throw new IllegalArgumentException(String.format("Type %d is not allowed", type));
+        switch (type) {
+            case HOMELESS_PERSON:
+                user = new HomelessPerson(email, password);
+                break;
+            case SHELTER_EMPLOYEE:
+                user = new ShelterEmployee(email, password);
+                break;
+            case ADMIN:
+                user = new Admin(email, password);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Type %d is not allowed", type));
         }
         db.appDao().addUser(user);
         currentUser = user;
@@ -124,14 +137,23 @@ public class UsersController {
 
     /**
      * Automatically logs in if there is a saved login
+     * @return true if we automatically logged in, false if not
      */
     public boolean checkSavedLogin() {
         int savedLoginId = sharedPref.getInt("savedLoginId", -1);
-        return savedLoginId != -1 && login(savedLoginId);
+        return (savedLoginId != -1) && login(savedLoginId);
     }
 
+    /**
+     * Reserve a number of beds at a shelter
+     * @param shelter the shelter to reserve beds at
+     * @param num the number of beds to reserve
+     * @return true if we successfully reserved beds, false otherwise
+     */
     public boolean reserve(Shelter shelter, int num) {
-        if (num > shelter.getCapacity() || currentUser == null || currentUser.getReservedNum() > 0) {
+        if ((num > shelter.getCapacity())
+                || (currentUser == null)
+                || (currentUser.getReservedNum() > 0)) {
             return false;
         }
 
@@ -140,6 +162,11 @@ public class UsersController {
         return true;
     }
 
+    /**
+     * Release the reserved beds at a shelter from reservation
+     * @param shelter the shelter to release reservations from
+     * @return true if we successfully released beds, false otherwise
+     */
     public boolean release(Shelter shelter) {
         if (currentUser == null) {
             return false;
@@ -150,8 +177,15 @@ public class UsersController {
         return true;
     }
 
+    /**
+     * Get the number of reserved beds at a shelter for the current user
+     * @param shelter the shelter to check for reserved beds at
+     * @return the number of reserved beds
+     */
     public int getNumReserved(Shelter shelter) {
-        if (currentUser == null || currentUser.getReservedShelterId() == null || currentUser.getReservedShelterId() != shelter.getId()) {
+        if ((currentUser == null)
+                || (currentUser.getReservedShelterId() == null)
+                || (currentUser.getReservedShelterId() != shelter.getId())) {
             return 0;
         }
         return currentUser.getReservedNum();

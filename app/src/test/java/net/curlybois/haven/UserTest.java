@@ -20,7 +20,8 @@ public class UserTest {
      */
     @Test
     public void equals_isCorrect() {
-        String email = "test@email.com", password = "password";
+        String email = "test@email.com";
+        String password = "password";
         User user1 = new User(email, password, User.HOMELESS_PERSON);
         User user2 = new User(email, password, User.HOMELESS_PERSON);
         assertTrue(user1.equals(user2));

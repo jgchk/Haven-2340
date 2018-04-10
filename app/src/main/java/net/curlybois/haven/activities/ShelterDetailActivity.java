@@ -15,30 +15,32 @@ import net.curlybois.haven.controllers.UsersController;
 import net.curlybois.haven.model.Shelter;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Shows the details about a shelter
+ */
 public class ShelterDetailActivity extends AppCompatActivity {
 
     public static final String EXTRAS_SHELTER = "shelter";
-    private static final String TAG = ShelterDetailActivity.class.getSimpleName();
 
-    @BindView(R.id.address_txv) TextView address_txv;
-    @BindView(R.id.phone_txv) TextView phone_txv;
-    @BindView(R.id.restrictions_txv) TextView restrictions_txv;
-    @BindView(R.id.notes_txv) TextView notes_txv;
-    @BindView(R.id.vacancies_txv) TextView vacancies_txv;
-    @BindView(R.id.vacancy_claim_spn) Spinner vacancyClaim_spn;
-    @BindView(R.id.vacancy_claim_btn) Button vacancyClaim_btn;
-    @BindView(R.id.vacancy_claim_txv) TextView vacancyClaim_txv;
-    @BindView(R.id.vacancy_spots_txv) TextView vacancySpots_txv;
-    @BindView(R.id.vacancy_release_btn) Button vacancyRelease_btn;
+    @BindView(R.id.address_txv) private TextView address_txv;
+    @BindView(R.id.phone_txv) private TextView phone_txv;
+    @BindView(R.id.restrictions_txv) private TextView restrictions_txv;
+    @BindView(R.id.notes_txv) private TextView notes_txv;
+    @BindView(R.id.vacancies_txv) private TextView vacancies_txv;
+    @BindView(R.id.vacancy_claim_spn) private Spinner vacancyClaim_spn;
+    @BindView(R.id.vacancy_claim_btn) private Button vacancyClaim_btn;
+    @BindView(R.id.vacancy_claim_txv) private TextView vacancyClaim_txv;
+    @BindView(R.id.vacancy_spots_txv) private TextView vacancySpots_txv;
+    @BindView(R.id.vacancy_release_btn) private Button vacancyRelease_btn;
 
     private Shelter shelter;
     private SheltersController sheltersController;
     private UsersController usersController;
-    private boolean reserve;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,21 +62,10 @@ public class ShelterDetailActivity extends AppCompatActivity {
         shelter = (Shelter) extras.getSerializable(EXTRAS_SHELTER);
 
         // Set up info
-        setTitle(shelter.getName());
-        address_txv.setText(shelter.getAddress());
-        phone_txv.setText(shelter.getPhone());
-        restrictions_txv.setText(shelter.getRestrictions());
-        notes_txv.setText(shelter.getNotes());
-        setVacanciesText();
+        setupInfo();
 
         // Set up vacancy claim spinner
-        Integer[] items = new Integer[shelter.getCapacity()];
-        for (int i = 0; i < shelter.getCapacity(); i++) {
-            items[i] = i + 1;
-        }
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        vacancyClaim_spn.setAdapter(adapter);
+        setupSpinner();
 
         // OnClick listeners
         vacancyClaim_btn.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +85,26 @@ public class ShelterDetailActivity extends AppCompatActivity {
         shelter.setReservations(numReserved);
         setVacanciesText();
         setReservationMode(numReserved == 0);
+    }
+
+    private void setupInfo() {
+        setTitle(Objects.requireNonNull(shelter).getName());
+        address_txv.setText(shelter.getAddress());
+        phone_txv.setText(shelter.getPhone());
+        restrictions_txv.setText(shelter.getRestrictions());
+        notes_txv.setText(shelter.getNotes());
+        setVacanciesText();
+    }
+
+    private void setupSpinner() {
+        Integer[] items = new Integer[shelter.getCapacity()];
+        for (int i = 0; i < shelter.getCapacity(); i++) {
+            items[i] = i + 1;
+        }
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        vacancyClaim_spn.setAdapter(adapter);
     }
 
     private void reserve() {
@@ -128,13 +139,15 @@ public class ShelterDetailActivity extends AppCompatActivity {
             vacancyClaim_btn.setVisibility(View.GONE);
             vacancySpots_txv.setVisibility(View.GONE);
             vacancyClaim_txv.setVisibility(View.VISIBLE);
-            vacancyClaim_txv.setText(String.format(Locale.getDefault(), "%d reserved", usersController.getNumReserved(shelter)));
+            vacancyClaim_txv.setText(String.format(Locale.getDefault(), "%d reserved",
+                    usersController.getNumReserved(shelter)));
             vacancyRelease_btn.setVisibility(View.VISIBLE);
         }
     }
 
     private void setVacanciesText() {
-        vacancies_txv.setText(String.format(Locale.getDefault(), "%d vacancies", shelter.getVacancies()));
+        vacancies_txv.setText(String.format(Locale.getDefault(), "%d vacancies",
+                shelter.getVacancies()));
     }
 
 }

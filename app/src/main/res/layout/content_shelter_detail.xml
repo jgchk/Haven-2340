@@ -20,7 +20,7 @@
         android:gravity="center_vertical"
         android:minHeight="48dp"
         android:padding="12dp"
-        android:text="Address"
+        android:text="@string/address"
         android:textColor="@color/primary_text" />
 
     <include layout="@layout/item_horizontal_divider" />
@@ -36,7 +36,7 @@
         android:gravity="center_vertical"
         android:minHeight="48dp"
         android:padding="12dp"
-        android:text="Phone"
+        android:text="@string/phone"
         android:textColor="@color/primary_text" />
 
     <include layout="@layout/item_horizontal_divider" />
@@ -52,7 +52,7 @@
         android:gravity="center_vertical"
         android:minHeight="48dp"
         android:padding="12dp"
-        android:text="Restrictions"
+        android:text="@string/restrictions"
         android:textColor="@color/primary_text" />
 
     <include layout="@layout/item_horizontal_divider" />
@@ -68,7 +68,7 @@
         android:gravity="center_vertical"
         android:minHeight="48dp"
         android:padding="12dp"
-        android:text="Notes"
+        android:text="@string/notes"
         android:textColor="@color/primary_text" />
 
     <include layout="@layout/item_horizontal_divider" />
@@ -82,7 +82,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="@string/vacancies_desc"
             android:padding="12dp"
             android:src="@drawable/ic_contact_mail_white_24dp"
             android:tint="@color/primary" />
@@ -97,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:gravity="center_vertical"
-                android:text="Vacancies"
+                android:text="@string/vacancies"
                 android:textColor="@color/primary_text" />
 
             <LinearLayout
@@ -118,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="spots"
+                    android:text="@string/spots"
                     android:textColor="@color/primary_text" />
 
                 <Button
@@ -126,14 +127,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="Claim" />
+                    android:text="@string/claim" />
 
                 <TextView
                     android:id="@+id/vacancy_claim_txv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="1"
                     android:textColor="@color/primary_text"
                     android:visibility="gone" />
 
@@ -142,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:text="Release"
+                    android:text="@string/release"
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>

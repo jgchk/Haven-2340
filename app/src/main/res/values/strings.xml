@@ -15,5 +15,29 @@
         <item>Admin</item>
     </string-array>
     <string name="title_activity_shelter_detail">ShelterDetailActivity</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="vacancies_desc">Vacancies</string>
+    <string name="vacancies">Vacancies</string>
+    <string name="spots">spots</string>
+    <string name="claim">Claim</string>
+    <string name="release">Release</string>
+    <string name="notes">Notes</string>
+    <string name="restrictions">Restrictions</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
+    <string name="filter_button_desc">Filter Button</string>
+    <string name="title_main_activity">MainActivity</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="none">None</string>
+    <string name="age">Age</string>
+    <string name="families">Families</string>
+    <string name="families_with_newborns">Families with Newborns</string>
+    <string name="children">Children</string>
+    <string name="young_adults">Young Adults</string>
+    <string name="anyone">Anyone</string>
+    <string name="veteran">Veteran</string>
+    <string name="shelter_name">Shelter Name</string>
+    <string name="information">Information</string>
+    <string name="search">Search</string>
 </resources>

@@ -25,11 +25,12 @@ import static org.junit.Assert.assertNull;
 @RunWith(AndroidJUnit4.class)
 public class AppDatabaseTest {
 
-    private static final String TAG = AppDatabaseTest.class.getSimpleName();
+    // --Commented out by Inspection (4/10/18 6:42 PM):private static final String TAG = AppDatabaseTest.class.getSimpleName();
 
     private AppDao appDao;
     private AppDatabase mDb;
-    private String email = "test@email.com", password = "password";
+    private final String email = "test@email.com";
+    private final String password = "password";
 
     @Before
     public void createDb() {
