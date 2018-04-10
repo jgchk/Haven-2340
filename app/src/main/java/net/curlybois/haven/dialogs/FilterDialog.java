@@ -32,9 +32,9 @@ public class FilterDialog extends DialogFragment {
 
     private static final String FILTER_QUERY = "filterQuery";
 
-    @BindView(R.id.gender_rg) private RadioGroup gender_rg;
-    @BindView(R.id.age_rg) private RadioGroup age_rg;
-    @BindView(R.id.veteran_chb) private CheckBox veteran_chb;
+    @BindView(R.id.gender_rg) RadioGroup gender_rg;
+    @BindView(R.id.age_rg) RadioGroup age_rg;
+    @BindView(R.id.veteran_chb) CheckBox veteran_chb;
 
     private FilterDialogListener listener;
 
@@ -129,33 +129,31 @@ public class FilterDialog extends DialogFragment {
     }
 
     private static int ageToId(Shelter.Age age) {
-        switch (age) {
-            case FAMILIES:
-                return R.id.families_rb;
-            case FAMILIES_NEWBORNS:
-                return R.id.newborns_rb;
-            case CHILDREN:
-                return R.id.children_rb;
-            case YOUNG_ADULTS:
-                return R.id.young_adults_rb;
-            case ANYONE:
-                return R.id.anyone_rb;
+        if (age == Shelter.Age.FAMILIES) {
+            return R.id.families_rb;
+        } else if (age == Shelter.Age.FAMILIES_NEWBORNS) {
+            return R.id.newborns_rb;
+        } else if (age == Shelter.Age.CHILDREN) {
+            return R.id.children_rb;
+        } else if (age == Shelter.Age.YOUNG_ADULTS) {
+            return R.id.young_adults_rb;
+        } else if (age == Shelter.Age.ANYONE) {
+            return R.id.anyone_rb;
         }
-        return R.id.gender_none_rb;
+        return R.id.age_none_rb;
     }
 
     private static Shelter.Age idToAge(int id) {
-        switch (id) {
-            case R.id.families_rb:
-                return Shelter.Age.FAMILIES;
-            case R.id.newborns_rb:
-                return Shelter.Age.FAMILIES_NEWBORNS;
-            case R.id.children_rb:
-                return Shelter.Age.CHILDREN;
-            case R.id.young_adults_rb:
-                return Shelter.Age.YOUNG_ADULTS;
-            case R.id.anyone_rb:
-                return Shelter.Age.ANYONE;
+        if (id == R.id.families_rb) {
+            return Shelter.Age.FAMILIES;
+        } else if (id == R.id.newborns_rb) {
+            return Shelter.Age.FAMILIES_NEWBORNS;
+        } else if (id == R.id.children_rb) {
+            return Shelter.Age.CHILDREN;
+        } else if (id == R.id.young_adults_rb) {
+            return Shelter.Age.YOUNG_ADULTS;
+        } else if (id == R.id.anyone_rb) {
+            return Shelter.Age.ANYONE;
         }
         return null;
     }

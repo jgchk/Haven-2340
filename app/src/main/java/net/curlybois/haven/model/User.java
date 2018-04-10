@@ -87,7 +87,7 @@ public class User {
      * Get whether the user is locked or not
      * @return true if the user is locked, false otherwise
      */
-    boolean isLocked() {
+    public boolean isLocked() {
         return locked;
     }
 

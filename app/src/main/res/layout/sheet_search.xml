@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:minHeight="@dimen/sheet_search_peek_height"
     app:behavior_hideable="false"
     app:behavior_peekHeight="@dimen/sheet_search_peek_height"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
@@ -36,12 +37,12 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/filter_button_desc"
             android:src="@drawable/ic_filter_list_black_24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/search_txe"
-            app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/filter_button_desc" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/results_rv"

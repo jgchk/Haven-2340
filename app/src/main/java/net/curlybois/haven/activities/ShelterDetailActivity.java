@@ -27,16 +27,16 @@ public class ShelterDetailActivity extends AppCompatActivity {
 
     public static final String EXTRAS_SHELTER = "shelter";
 
-    @BindView(R.id.address_txv) private TextView address_txv;
-    @BindView(R.id.phone_txv) private TextView phone_txv;
-    @BindView(R.id.restrictions_txv) private TextView restrictions_txv;
-    @BindView(R.id.notes_txv) private TextView notes_txv;
-    @BindView(R.id.vacancies_txv) private TextView vacancies_txv;
-    @BindView(R.id.vacancy_claim_spn) private Spinner vacancyClaim_spn;
-    @BindView(R.id.vacancy_claim_btn) private Button vacancyClaim_btn;
-    @BindView(R.id.vacancy_claim_txv) private TextView vacancyClaim_txv;
-    @BindView(R.id.vacancy_spots_txv) private TextView vacancySpots_txv;
-    @BindView(R.id.vacancy_release_btn) private Button vacancyRelease_btn;
+    @BindView(R.id.address_txv) TextView address_txv;
+    @BindView(R.id.phone_txv) TextView phone_txv;
+    @BindView(R.id.restrictions_txv) TextView restrictions_txv;
+    @BindView(R.id.notes_txv) TextView notes_txv;
+    @BindView(R.id.vacancies_txv) TextView vacancies_txv;
+    @BindView(R.id.vacancy_claim_spn) Spinner vacancyClaim_spn;
+    @BindView(R.id.vacancy_claim_btn) Button vacancyClaim_btn;
+    @BindView(R.id.vacancy_claim_txv) TextView vacancyClaim_txv;
+    @BindView(R.id.vacancy_spots_txv) TextView vacancySpots_txv;
+    @BindView(R.id.vacancy_release_btn) Button vacancyRelease_btn;
 
     private Shelter shelter;
     private SheltersController sheltersController;

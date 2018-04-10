@@ -57,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
     private static final int MY_LOCATION_REQUEST_CODE = 0;
     private static final int ZOOM_LEVEL = 11;
 
-    @BindView(R.id.results_rv) private RecyclerView results_rv;
-    @BindView(R.id.search_txe) private EditText search_txe;
-    @BindView(R.id.filter_btn) private ImageButton filter_btn;
+    @BindView(R.id.results_rv) RecyclerView results_rv;
+    @BindView(R.id.search_txe) EditText search_txe;
+    @BindView(R.id.filter_btn) ImageButton filter_btn;
 
     private ShelterAdapter resultsAdapter;
     private SheltersController sheltersController;
@@ -191,16 +191,19 @@ public class MainActivity extends AppCompatActivity implements ShelterListClickL
     @Override
     public void setGender(Shelter.Gender gender) {
         sheltersController.setGenderFilter(gender);
+        applyFilters();
     }
 
     @Override
     public void setAge(Shelter.Age age) {
         sheltersController.setAgeFilter(age);
+        applyFilters();
     }
 
     @Override
     public void setVeterans(boolean veterans) {
         sheltersController.setVeteransFilter(veterans);
+        applyFilters();
     }
 
     @Override
